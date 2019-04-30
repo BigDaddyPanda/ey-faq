@@ -1,58 +1,157 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Index from './pages/Index.vue';
-import Landing from './pages/Landing.vue';
-import Login from './pages/Login.vue';
-import Profile from './pages/Profile.vue';
+// Horizontal NavBar and Footer
 import MainNavbar from './layout/MainNavbar.vue';
 import MainFooter from './layout/MainFooter.vue';
+
+// Main Layouts
+import Index from './pages/Index.vue';
+import Auth from './pages/Auth.vue';
+import Ask from './pages/Ask.vue';
+import Admin from './pages/Admin.vue';
+
+// Children
+//  Admin
+import AdminIndex from './pages/Admin/Index.vue';
+import ManageArticles from './pages/Admin/ManageArticles.vue';
+import ManageRequests from './pages/Admin/ManageRequests.vue';
+import ManageUsers from './pages/Admin/ManageUsers.vue';
+// import ReportABug from './pages/Admin/ReportABug.vue';
+
+//  Ask
+import AskIndex from './pages/Ask/Index.vue';
+import AskQuestion from './pages/Ask/AskQuestion.vue';
+import MyRequest from './pages/Ask/MyRequest.vue';
+import AskReportABug from './pages/Ask/ReportABug.vue';
+import SubmitRequest from './pages/Ask/SubmitRequest.vue';
+import Support from './pages/Ask/Support.vue';
+
+//  Auth
+import Login from './pages/Auth/Login.vue';
+
 
 Vue.use(Router);
 
 export default new Router({
-  linkExactActiveClass: 'active',
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'index',
-      components: { default: Index, header: MainNavbar, footer: MainFooter },
+      components: {
+        default: Index,
+        header: MainNavbar,
+        footer: MainFooter
+      },
+
       props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
+        header: {
+          colorOnScroll: 400
+        },
+        footer: {
+          backgroundColor: 'black'
+        }
       }
     },
     {
-      path: '/landing',
-      name: 'landing',
-      components: { default: Landing, header: MainNavbar, footer: MainFooter },
+      path: '/auth',
+      name: 'index',
+      components: {
+        default: Auth,
+        header: MainNavbar,
+        footer: MainFooter
+      },
+      children: [{
+        path: "login",
+        component: Login
+      }],
       props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
+        header: {
+          colorOnScroll: 400
+        },
+        footer: {
+          backgroundColor: 'black'
+        }
       }
     },
     {
-      path: '/login',
-      name: 'login',
-      components: { default: Login, header: MainNavbar },
+      path: '/ask',
+      name: 'index',
+      components: {
+        default: Ask,
+        header: MainNavbar,
+        footer: MainFooter
+      },
+      children: [{
+          path: "index",
+          component: Index
+        },
+        {
+          path: "new-question",
+          component: AskQuestion
+        },
+        {
+          path: "my-request",
+          component: MyRequest
+        },
+        {
+          path: "support",
+          component: Support
+        }
+      ],
       props: {
-        header: { colorOnScroll: 400 }
+        header: {
+          colorOnScroll: 400
+        },
+        footer: {
+          backgroundColor: 'black'
+        }
       }
     },
     {
-      path: '/profile',
-      name: 'profile',
-      components: { default: Profile, header: MainNavbar, footer: MainFooter },
+      path: '/admin',
+      name: 'index',
+      components: {
+        default: Admin,
+        header: MainNavbar,
+        footer: MainFooter
+      },
+      children: [{
+          path: "index",
+          component: AdminIndex
+        },
+        {
+          path: "articles",
+          component: ManageArticles
+        },
+        {
+          path: "requests",
+          component: ManageRequests
+        },
+        {
+          path: "users",
+          component: ManageUsers
+        }
+      ],
       props: {
-        header: { colorOnScroll: 400 },
-        footer: { backgroundColor: 'black' }
+        header: {
+          colorOnScroll: 400
+        },
+        footer: {
+          backgroundColor: 'black'
+        }
       }
-    }
+    },
+
   ],
   scrollBehavior: to => {
     if (to.hash) {
-      return { selector: to.hash };
+      return {
+        selector: to.hash
+      };
     } else {
-      return { x: 0, y: 0 };
+      return {
+        x: 0,
+        y: 0
+      };
     }
   }
 });

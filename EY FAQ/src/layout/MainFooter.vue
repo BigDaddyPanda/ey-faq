@@ -5,37 +5,146 @@
     :data-background-color="backgroundColor"
   >
     <div class="container">
-      <nav>
-        <ul>
-          <li>
-            <a href="https://www.creative-tim.com">
-              Creative TimZ
+      <!-- Footer Links -->
+      <div class="container text-center text-md-left">
+        <!-- Grid row -->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+            <!-- Content -->
+            <h5 class="font-weight-bold text-uppercase mb-4">Footer Content</h5>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p>
+              Ipsa numquam alias dolore distinctio tenetur tempora facere, ad deleniti eligendi aliquid? 
+              Nobis illum quod.
+            </p>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="clearfix w-100 d-md-none">
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 mx-auto my-md-4 my-0 mt-4 mb-1">
+            <!-- Links -->
+            <h5 class="font-weight-bold text-uppercase mb-4">About</h5>
+
+            <ul class="list-unstyled">
+              <li>
+                <p>
+                  <a href="#!">PROJECTS</a>
+                </p>
+              </li>
+              <br/>
+              <li>
+                <p>
+                  <a href="#!">ABOUT US</a>
+                </p>
+              </li>
+              <br/>
+              <li>
+                <p>
+                  <a href="#!">BLOG</a>
+                </p>
+              </li>
+              <br/>
+              <li>
+                <p>
+                  <a href="#!">AWARDS</a>
+                </p>
+              </li>
+              <br/>
+            </ul>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="clearfix w-100 d-md-none">
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+            <!-- Contact details -->
+            <h5 class="font-weight-bold text-uppercase mb-4">Address</h5>
+
+            <ul class="list-unstyled">
+              <li>
+                <p>
+                  <i class="fas fa-home mr-3"></i> lorem ipsum dolor
+                </p>
+              </li>
+              <br/>
+              <li>
+                <p>
+                  <i class="fas fa-envelope mr-3"></i> lorem@ipsum.dolor
+                </p>
+              </li>
+              <br/>
+              <li>
+                <p>
+                  <i class="fas fa-phone mr-3"></i> + 01 234 567 88
+                </p>
+              </li>
+              <br/>
+              <li>
+                <p>
+                  <i class="fas fa-print mr-3"></i> + 01 234 567 89
+                </p>
+              </li>
+            </ul>
+          </div>
+          <!-- Grid column -->
+
+          <hr class="clearfix w-100 d-md-none">
+
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 text-center mx-auto my-4">
+            <!-- Social buttons -->
+            <h5 class="font-weight-bold text-uppercase mb-4">Follow Us</h5>
+
+            <!-- Facebook -->
+            <a
+              target="_blank"
+              href="https://www.twitter.com/"
+              class="btn btn-neutral btn-icon btn-twitter btn-round btn-md"
+              rel="tooltip"
+              title="Follow us"
+            >
+              <i class="fab fa-twitter"></i>
             </a>
-          </li>
-          <li>
-            <a href="https:///presentation.creative-tim.com">
-              About Us
+            <br/>
+            <a
+              target="_blank"
+              href="https://www.facebook.com/"
+              class="btn btn-neutral btn-icon btn-facebook btn-round btn-md"
+              rel="tooltip"
+              title="Like us"
+            >
+              <i class="fab fa-facebook-square"></i>
             </a>
-          </li>
-          <li>
-            <a href="https:///blog.creative-tim.com">
-              Blog
+            <br/>
+            <a
+              target="_blank"
+              href="https://www.linkedin.com/"
+              class="btn btn-neutral btn-icon btn-linkedin btn-md btn-round"
+              rel="tooltip"
+              title="Follow us"
+            >
+              <i class="fab fa-linkedin"></i>
             </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="copyright">
+            <br/> 
+            <br/>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+      <!-- Footer Links --> 
+      <div class="text-center text-muted">
         &copy; {{ year }}, Designed by
-        <a href="https:///www.invisionapp.com" target="_blank" rel="noopener"
-          >Invision</a
-        >. Coded by
-        <a href="https://binarcode.com" target="_blank" rel="noopener"
-          >BinarCode</a
-        >
-        and
-        <a href="https://www.creative-tim.com" target="_blank" rel="noopener"
-          >Creative Tim</a
-        >.
+        
+        <a
+          href="https://www.ey.com/tn/fr/home/ey-tunisia---english-version"
+          target="_blank"
+          rel="noopener"
+        >EY Teams</a>.
       </div>
     </div>
   </footer>
