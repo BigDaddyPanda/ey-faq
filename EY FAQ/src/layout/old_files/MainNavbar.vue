@@ -1,4 +1,4 @@
-<template> 
+<template>
   <navbar
     position="fixed"
     type="primary"

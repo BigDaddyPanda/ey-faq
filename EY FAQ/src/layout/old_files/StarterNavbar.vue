@@ -1,9 +1,8 @@
 <template>
   <navbar position="fixed" type="primary" menu-classes="ml-auto">
-    <!-- es-lint disable -->
     <template slot-scope="{ toggle, isToggled }">
       <router-link v-popover:popover1 class="navbar-brand" to="/presentation">
-        My Site Name
+        My Site Name111
       </router-link>
       <el-popover
         ref="popover1"

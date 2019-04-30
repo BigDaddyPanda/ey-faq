@@ -9,7 +9,7 @@
         <ul>
           <li>
             <a href="https://www.creative-tim.com">
-              Creative TimZ
+              Creative Tim
             </a>
           </li>
           <li>
