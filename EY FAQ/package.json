@@ -12,6 +12,7 @@
     "element-ui": "^2.5.4",
     "lodash": "^4.17.11",
     "nouislider": "^11.1.0",
+    "v-markdown-editor": "^1.0.8",
     "vue": "^2.6.6",
     "vue-fab": "^2.3.1",
     "vue-lazy-load": "^0.0.7",

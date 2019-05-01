@@ -6,25 +6,26 @@
     menu-classes="ml-auto"
     position="relative"
   >
+    <router-link v-popover:popover1 class="navbar-brand" to="/">EY Mentor</router-link>
     <p class="navbar-brand" href="#">Welcome back, Admin</p>
     <template slot="navbar-menu">
       <li class="nav-item">
-        <a class="nav-link" href="#pablo">
+        <router-link class="nav-link" to="/admin/articles">
           <i class="now-ui-icons objects_globe"></i>
-          <p>Discover</p>
-        </a>
+          <p>Manage Articles</p>
+        </router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#pablo">
-          <i class="now-ui-icons users_circle-08"></i>
-          <p>Profile</p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#pablo">
+        <router-link class="nav-link" to="/admin/requests">
           <i class="now-ui-icons ui-1_settings-gear-63"></i>
-          <p>Settings</p>
-        </a>
+          <p>Manage Requests</p>
+        </router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/admin/users">
+          <i class="now-ui-icons users_circle-08"></i>
+          <p>Manage Users</p>
+        </router-link>
       </li>
     </template>
   </navbar>

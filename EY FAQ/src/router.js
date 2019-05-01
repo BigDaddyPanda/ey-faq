@@ -129,14 +129,17 @@ export default new Router({
         },
         {
           path: "articles",
+          name: "manage-articles",
           component: ManageArticles
         },
         {
           path: "requests",
+          name: "manage-requests",
           component: ManageRequests
         },
         {
           path: "users",
+          name: "manage-users",
           component: ManageUsers
         }
       ],
