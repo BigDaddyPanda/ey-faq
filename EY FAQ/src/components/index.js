@@ -6,9 +6,7 @@ import Switch from './Switch.vue';
 import Badge from './Badge';
 import Progress from './Progress.vue';
 import Button from './Button.vue';
-
 import DropDown from './Dropdown.vue';
-
 import Card from './Cards/Card.vue';
 import Collapse from './Collapse/Collapse.vue';
 import CollapseItem from './Collapse/CollapseItem.vue';
@@ -20,8 +18,8 @@ import Tabs from './Tabs/Tabs.vue';
 import Modal from './Modal.vue';
 import Parallax from './Parallax.vue';
 import Slider from './Slider.vue';
-
 import Pagination from './Pagination.vue';
+import BaseTable from './BaseTable.vue';
 
 export {
   Alert,
@@ -44,5 +42,6 @@ export {
   Modal,
   Parallax,
   Slider,
-  Button
+  Button,
+  BaseTable
 };

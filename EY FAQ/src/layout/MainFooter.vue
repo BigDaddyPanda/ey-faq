@@ -99,7 +99,7 @@
             <!-- Social buttons -->
             <h5 class="font-weight-bold text-uppercase mb-4">Follow Us</h5>
 
-            <!-- Facebook -->
+            <!-- youtube -->
             <a
               target="_blank"
               href="https://www.twitter.com/"
@@ -112,12 +112,12 @@
             <br/>
             <a
               target="_blank"
-              href="https://www.facebook.com/"
-              class="btn btn-neutral btn-icon btn-facebook btn-round btn-md"
+              href="https://www.youtube.com/"
+              class="btn btn-danger btn-icon btn-youtube btn-round btn-md"
               rel="tooltip"
               title="Like us"
             >
-              <i class="fab fa-facebook-square"></i>
+              <i class="fab fa-youtube"></i>
             </a>
             <br/>
             <a

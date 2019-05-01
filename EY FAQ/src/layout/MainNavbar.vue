@@ -1,37 +1,30 @@
-<template> 
-  <navbar
+<template>
+  <navbar position="fixed" type="primary" menu-classes="ml-auto">
+    <!-- <navbar
     position="fixed"
-    type="primary"
+    type="primary"   
     :transparent="transparent"
     :color-on-scroll="colorOnScroll"
     menu-classes="ml-auto"
-  >
+    >-->
     <!-- <template slot-scope="{ toggle, isToggled }"> -->
-    <template >
-      <router-link v-popover:popover1 class="navbar-brand" to="/">
-        EY Mentor
-      </router-link>
-       
+    <template>
+      <router-link v-popover:popover1 class="navbar-brand" to="/">EY Mentor</router-link>
     </template>
     <template slot="navbar-menu">
+      <li class="nav-item"></li>
       <li class="nav-item">
-        <a
-          class="nav-link"
-          href="#download"
-        >
+        <router-link v-popover:popover1 class="nav-link" to="/ask/">
           <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-          <p>Download</p>
-        </a>
+          <p>Support</p>
+        </router-link>
       </li>
+
       <li class="nav-item">
-        <a
-          class="nav-link"
-          href="#login"
-          target="_blank"
-        >
+        <router-link v-popover:popover1 class="nav-link" to="/ask/">
           <i class="now-ui-icons users_circle-08"></i>
-          <p>Login</p>
-        </a>
+          <p>Download</p>
+        </router-link>
       </li>
       <li class="nav-item">
         <a
@@ -77,10 +70,11 @@
 </template>
 
 <script>
-import { DropDown, NavbarToggleButton, Navbar, NavLink } from '@/components';
-import { Popover } from 'element-ui';
+/* eslint-disable */
+import { DropDown, NavbarToggleButton, Navbar, NavLink } from "@/components";
+import { Popover } from "element-ui";
 export default {
-  name: 'main-navbar',
+  name: "main-navbar",
   props: {
     transparent: Boolean,
     colorOnScroll: Number

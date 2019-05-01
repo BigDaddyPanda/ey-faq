@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 // Horizontal NavBar and Footer
 import MainNavbar from './layout/MainNavbar.vue';
+import AskNavBar from './layout/AskNavBar.vue';
 import MainFooter from './layout/MainFooter.vue';
 
 // Main Layouts
@@ -9,6 +11,8 @@ import Index from './pages/Index.vue';
 import Auth from './pages/Auth.vue';
 import Ask from './pages/Ask.vue';
 import Admin from './pages/Admin.vue';
+import NotFound from './pages/NotFound.vue';
+
 
 // Children
 //  Admin
@@ -19,12 +23,11 @@ import ManageUsers from './pages/Admin/ManageUsers.vue';
 // import ReportABug from './pages/Admin/ReportABug.vue';
 
 //  Ask
-import AskIndex from './pages/Ask/Index.vue';
+// import AskIndex from './pages/Ask/Index.vue';
 import AskQuestion from './pages/Ask/AskQuestion.vue';
 import MyRequest from './pages/Ask/MyRequest.vue';
-import AskReportABug from './pages/Ask/ReportABug.vue';
-import SubmitRequest from './pages/Ask/SubmitRequest.vue';
 import Support from './pages/Ask/Support.vue';
+import QuestionPage from './pages/Ask/QuestionPage.vue';
 
 //  Auth
 import Login from './pages/Auth/Login.vue';
@@ -65,7 +68,8 @@ export default new Router({
       }],
       props: {
         header: {
-          colorOnScroll: 400
+          colorOnScroll: 400,
+          transparent: false
         },
         footer: {
           backgroundColor: 'black'
@@ -74,15 +78,15 @@ export default new Router({
     },
     {
       path: '/ask',
-      name: 'index',
+      name: 'ask-index',
       components: {
         default: Ask,
-        header: MainNavbar,
+        header: AskNavBar,
         footer: MainFooter
       },
       children: [{
-          path: "index",
-          component: Index
+          path: "",
+          component: Support
         },
         {
           path: "new-question",
@@ -93,9 +97,9 @@ export default new Router({
           component: MyRequest
         },
         {
-          path: "support",
-          component: Support
-        }
+          path: "question/:question_id",
+          component: QuestionPage
+        },
       ],
       props: {
         header: {
@@ -141,6 +145,10 @@ export default new Router({
       }
     },
 
+    {
+      path: "*",
+      component: NotFound
+    },
   ],
   scrollBehavior: to => {
     if (to.hash) {

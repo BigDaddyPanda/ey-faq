@@ -1,6 +1,6 @@
 <template>
     <div>
-        Welcome to ReportABug
+        {{$path.params.question_id}}
     </div>
 </template>
 
