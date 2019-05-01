@@ -4,10 +4,12 @@ import App from './App.vue';
 import router from './router';
 import NowUiKit from './plugins/now-ui-kit';
 import { store } from './_vuex/_store';
+import VueScrollTo from 'vue-scrollto'
 
 Vue.config.productionTip = false;
 
 Vue.use(NowUiKit);
+Vue.use(VueScrollTo);
 
 new Vue({
   router,

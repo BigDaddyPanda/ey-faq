@@ -5,6 +5,7 @@ import Router from 'vue-router';
 import MainNavbar from './layout/MainNavbar.vue';
 import AskNavBar from './layout/AskNavBar.vue';
 import MainFooter from './layout/MainFooter.vue';
+import AdminNavBar from './layout/AdminNavBar.vue';
 
 // Main Layouts
 import Index from './pages/Index.vue';
@@ -56,14 +57,14 @@ export default new Router({
     },
     {
       path: '/auth',
-      name: 'index',
+      name: 'auth-index',
       components: {
         default: Auth,
         header: MainNavbar,
         footer: MainFooter
       },
       children: [{
-        path: "login",
+        path: "",
         component: Login
       }],
       props: {
@@ -78,7 +79,6 @@ export default new Router({
     },
     {
       path: '/ask',
-      name: 'ask-index',
       components: {
         default: Ask,
         header: AskNavBar,
@@ -86,6 +86,7 @@ export default new Router({
       },
       children: [{
           path: "",
+          name: 'ask-index',
           component: Support
         },
         {
@@ -97,8 +98,12 @@ export default new Router({
           component: MyRequest
         },
         {
-          path: "question/:question_id",
+          path: "question/:questId",
           component: QuestionPage
+        },
+        {
+          path: "question",
+          redirect: "new-question"
         },
       ],
       props: {
@@ -112,14 +117,14 @@ export default new Router({
     },
     {
       path: '/admin',
-      name: 'index',
       components: {
         default: Admin,
-        header: MainNavbar,
+        header: AdminNavBar,
         footer: MainFooter
       },
       children: [{
-          path: "index",
+          path: "",
+          name: 'admin-index',
           component: AdminIndex
         },
         {

@@ -63,23 +63,27 @@
         <card>
           <ul slot="raw-content" class="list-group list-group-flush text-left">
             <li class="list-group-item">
-              <a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit.</a>
+              <router-link
+                to="/ask/question/1"
+              >12 Lorem ipsum dolor sit amet consectetur adipisicing elit.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
                 <cite title="Source Title">Source Title</cite>
               </footer>
             </li>
             <li class="list-group-item">
-              <a href="#">Molestiae pariatur accusamus fuga, officiis in neque iure.</a>
+              <router-link
+                to="/ask/question/1"
+              >Molestiae pariatur accusamus fuga, officiis in neque iure.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
                 <cite title="Source Title">Source Title</cite>
               </footer>
             </li>
             <li class="list-group-item">
-              <a
-                href="#"
-              >Quas id adipisci dolore perferendis harum quia porro nam? Voluptatum debitis illo tempore harum!</a>
+              <router-link
+                to="/ask/question/1"
+              >Quas id adipisci dolore perferendis harum quia porro nam? Voluptatum debitis illo tempore harum!</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
                 <cite title="Source Title">Source Title</cite>
@@ -87,30 +91,34 @@
             </li>
           </ul>
         </card>
-        <a href="#">View all</a>
+        <router-link to="/ask/my-request">View all</router-link>
       </card>
       <card>
         <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
         <card>
           <ul slot="raw-content" class="list-group list-group-flush text-left">
             <li class="list-group-item">
-              <a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit.</a>
+              <router-link
+                to="/ask/question/1"
+              >12 Lorem ipsum dolor sit amet consectetur adipisicing elit.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
                 <cite title="Source Title">Source Title</cite>
               </footer>
             </li>
             <li class="list-group-item">
-              <a href="#">Molestiae pariatur accusamus fuga, officiis in neque iure.</a>
+              <router-link
+                to="/ask/question/1"
+              >Molestiae pariatur accusamus fuga, officiis in neque iure.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
                 <cite title="Source Title">Source Title</cite>
               </footer>
             </li>
             <li class="list-group-item">
-              <a
-                href="#"
-              >Quas id adipisci dolore perferendis harum quia porro nam? Voluptatum debitis illo tempore harum!</a>
+              <router-link
+                to="/ask/question/1"
+              >Quas id adipisci dolore perferendis harum quia porro nam? Voluptatum debitis illo tempore harum!</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
                 <cite title="Source Title">Source Title</cite>
@@ -118,7 +126,7 @@
             </li>
           </ul>
         </card>
-        <a href="#">View all</a>
+        <router-link to="/ask/my-request">View all</router-link>
       </card>
     </div>
   </div>

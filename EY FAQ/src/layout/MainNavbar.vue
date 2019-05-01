@@ -15,14 +15,14 @@
       <li class="nav-item"></li>
       <li class="nav-item">
         <router-link v-popover:popover1 class="nav-link" to="/ask/">
-          <i class="now-ui-icons arrows-1_cloud-download-93"></i>
+          <i class="now-ui-icons travel_info"></i>
           <p>Support</p>
         </router-link>
       </li>
 
       <li class="nav-item">
         <router-link v-popover:popover1 class="nav-link" to="/ask/">
-          <i class="now-ui-icons users_circle-08"></i>
+          <i class="now-ui-icons arrows-1_cloud-download-93"></i>
           <p>Download</p>
         </router-link>
       </li>

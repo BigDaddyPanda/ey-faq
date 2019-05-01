@@ -52,7 +52,7 @@
     <javascript-components></javascript-components>
     <carousel-section></carousel-section>
     <nucleo-icons-section></nucleo-icons-section>-->
-    <div class="section">
+    <!-- <div class="section">
       <div class="container text-center">
         <div class="row justify-content-md-center">
           <div class="col-md-12 col-lg-8">
@@ -69,7 +69,7 @@
     </div>
     <signup-form></signup-form>
     <examples-section></examples-section>
-    <download-section></download-section>
+    <download-section></download-section> -->
   </div>
 </template>
 <script>

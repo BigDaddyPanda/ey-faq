@@ -27,6 +27,7 @@ import {
   BaseTable
 
 } from '@/components';
+import { Popover, Tooltip, DatePicker } from 'element-ui';
 const globalComponents = {
   install(Vue) { 
     Vue.component(Alert.name,Alert);
@@ -51,6 +52,9 @@ const globalComponents = {
     Vue.component(Slider.name,Slider);
     Vue.component(Button.name,Button);
     Vue.component(BaseTable.name,BaseTable);
+    Vue.component(Popover.name,Popover);
+    Vue.component(Tooltip.name,Tooltip);
+    Vue.component(DatePicker.name,DatePicker);
     }
 };
 
