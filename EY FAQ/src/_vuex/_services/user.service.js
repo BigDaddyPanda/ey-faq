@@ -87,7 +87,7 @@ function _delete(id) {
     return fetch(`${backend_entry_point}/users/${id}`, requestOptions).then(handleResponse);
 }
 
-function handleResponse(response) {
+export function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {

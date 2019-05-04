@@ -15,9 +15,10 @@ import Admin from './pages/Admin.vue';
 import NotFound from './pages/NotFound.vue';
 
 
+import EditUser from './pages/Admin/EditUser.vue';
 // Children
 //  Admin
-import AdminIndex from './pages/Admin/Index.vue';
+import EditArticle from './pages/Admin/EditArticle.vue';
 import ManageArticles from './pages/Admin/ManageArticles.vue';
 import ManageRequests from './pages/Admin/ManageRequests.vue';
 import ManageUsers from './pages/Admin/ManageUsers.vue';
@@ -125,12 +126,17 @@ export default new Router({
       children: [{
           path: "",
           name: 'admin-index',
-          component: AdminIndex
+          component: EditUser
         },
         {
           path: "articles",
           name: "manage-articles",
           component: ManageArticles
+        },
+        {
+          path: "articles/:article_id",
+          name: "edit-articles",
+          component: EditArticle
         },
         {
           path: "requests",

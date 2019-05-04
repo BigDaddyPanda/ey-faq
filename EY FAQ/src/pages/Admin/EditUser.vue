@@ -1,7 +1,5 @@
 <template>
-    <div>
-        Welcome to Index
-    </div>
+    
 </template>
 
 <script>
