@@ -11,7 +11,7 @@ def check_if_token_in_blacklist(decrypted_token):
     return user_model.RevokedTokenModel.is_jti_blacklisted(jti)
 
 import models.user_model as user_model
-import resources.resources as user_resources, resources.service_resources as service_resources
+import resources.resources as user_resources, resources.service_resources as service_resources,resources.roles_resource as role_resources
 
 api.add_resource(user_resources.UserRegistration, '/registration')
 api.add_resource(user_resources.UserLogin, '/login')
@@ -20,7 +20,9 @@ api.add_resource(user_resources.UserLogoutRefresh, '/logout/refresh')
 api.add_resource(user_resources.TokenRefresh, '/token/refresh')
 api.add_resource(user_resources.AllUsers, '/users')
 api.add_resource(user_resources.SecretResource, '/secret')
+
 api.add_resource(service_resources.ServiceRegistration, '/service')
+api.add_resource(role_resources.RoleRegistration, '/role')
 
 if __name__ == "__main__":
     # app.run(debug=True)

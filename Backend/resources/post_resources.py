@@ -10,8 +10,6 @@ parser.add_argument(
     'password', help='This field cannot be blank', required=True)
 parser.add_argument(
     'service_id', help='This field cannot be blank', required=True)
-parser.add_argument(
-    'role_id', help='This field cannot be blank', required=True)
 
 
 class UserRegistration(Resource):
@@ -24,8 +22,7 @@ class UserRegistration(Resource):
         new_user = UserModel(
             username=data['username'],
             password=UserModel.generate_hash(data['password']),
-            service_id=data['service_id'],
-            role_id=data['role_id']
+            service_id=data['service_id']
         )
 
         try:
@@ -33,7 +30,7 @@ class UserRegistration(Resource):
             access_token = create_access_token(identity=data['username'])
             refresh_token = create_refresh_token(identity=data['username'])
             return {
-                'message': f"User {(data['username'])} was created under the role{new_user.role.designation}",
+                'message': 'User {} was created'.format(data['username']),
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }

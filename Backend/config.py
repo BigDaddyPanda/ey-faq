@@ -65,4 +65,15 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # The manager will handle external scripts such as the ones used 
 # for Migration management
+# thanks to this manager, now you can run these commands
+
+# python app.py db init
+# python app.py db migrate
+# python app.py db upgrade 
+
+# or simply
+# flask db init
+# flask db migrate
+# flask db upgrade
+
 manager = Manager(app)
