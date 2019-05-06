@@ -15,7 +15,6 @@
             </h4>
             <br>
           </div>
-          <div class="card-footer">sqdqs</div>
         </card>
         <br>
         <br>
@@ -27,7 +26,7 @@
           <template slot="header">
             <h3 class="card-title title-up">Sign Up</h3>
             <div class="social-line">
-              <a class="btn btn-neutral btn-facebook btn-icon btn-round">
+              <!-- <a class="btn btn-neutral btn-facebook btn-icon btn-round">
                 <i class="fab fa-facebook-square"></i>
               </a>
               <a class="btn btn-neutral btn-twitter btn-icon btn-lg btn-round">
@@ -35,10 +34,10 @@
               </a>
               <a class="btn btn-neutral btn-google btn-icon btn-round">
                 <i class="fab fa-google-plus"></i>
-              </a>
+              </a>-->
             </div>
           </template>
-          <template> 
+          <template>
             <fg-input
               v-model="Email"
               placeholder="Email"
@@ -50,10 +49,13 @@
               placeholder="************"
               addon-left-icon="now-ui-icons text_caps-small"
             ></fg-input>
-
           </template>
           <div class="card-footer text-center">
-            <router-link to="/admin"><n-button type="neutral" round size="lg">Sign In</n-button></router-link>
+            <n-button type="neutral" @click="login_handler" round size="lg">Login</n-button>
+            <br>
+            <router-link :to="{name:'signup-view'}">
+              <n-button type="neutral" link round size="xs">Create a new Account!</n-button>
+            </router-link>
           </div>
         </card>
       </div>
@@ -65,10 +67,15 @@
 export default {
   data() {
     return {
-      First: "",
       Password: "",
       Email: ""
     };
+  },
+  methods: {
+    login_handler() {
+      console.log(Password,Email);
+      
+    }
   }
 };
 </script>

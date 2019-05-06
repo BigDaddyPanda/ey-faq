@@ -87,7 +87,7 @@ export default {
         {
           name: "nickname",
           sortField: "nickname",
-          callback: "allcap",
+          // callback: "allcap",
           titleClass: "text-left",
           dataClass: "text-left"
         },

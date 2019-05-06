@@ -15,7 +15,6 @@ import Admin from './pages/Admin.vue';
 import NotFound from './pages/NotFound.vue';
 
 
-import EditUser from './pages/Admin/EditUser.vue';
 // Children
 //  Admin
 import EditArticle from './pages/Admin/EditArticle.vue';
@@ -33,6 +32,8 @@ import QuestionPage from './pages/Ask/QuestionPage.vue';
 
 //  Auth
 import Login from './pages/Auth/Login.vue';
+import Signup from './pages/Auth/Signup.vue';
+import EditUser from './pages/Auth/EditUser.vue';
 
 
 Vue.use(Router);
@@ -59,15 +60,23 @@ export default new Router({
     {
       path: '/auth',
       name: 'auth-index',
+      redirect: '/auth/login',
       components: {
         default: Auth,
         header: MainNavbar,
         footer: MainFooter
       },
       children: [{
-        path: "",
-        component: Login
-      }],
+          path: "login",
+          name: "login-view",
+          component: Login
+        },
+        {
+          path: "signup",
+          name: "signup-view",
+          component: Signup
+        },
+      ],
       props: {
         header: {
           colorOnScroll: 400,
@@ -123,12 +132,8 @@ export default new Router({
         header: AdminNavBar,
         footer: MainFooter
       },
+      redirect: "/admin/articles",
       children: [{
-          path: "",
-          name: 'admin-index',
-          component: EditUser
-        },
-        {
           path: "articles",
           name: "manage-articles",
           component: ManageArticles
@@ -147,6 +152,10 @@ export default new Router({
           path: "users",
           name: "manage-users",
           component: ManageUsers
+        }, {
+          path: "users/:user_id",
+          name: 'admin-index',
+          component: EditUser
         }
       ],
       props: {
