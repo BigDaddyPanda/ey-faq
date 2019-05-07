@@ -13,7 +13,9 @@ Flask-JWT-Extended
 Flask-Migrate
 Flask-Moment
 flask-RESTful
+flask-Mail
 Flask-Script
 Flask-SQLAlchemy
 Flask-WTF
+itsdangerous
 MySQL-python

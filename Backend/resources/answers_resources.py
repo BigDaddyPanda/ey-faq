@@ -8,8 +8,6 @@ parser.add_argument(
     'username', help='This field cannot be blank', required=True)
 parser.add_argument(
     'password', help='This field cannot be blank', required=True)
-parser.add_argument(
-    'service_id', help='This field cannot be blank', required=True)
 
 
 class UserRegistration(Resource):
@@ -22,7 +20,12 @@ class UserRegistration(Resource):
         new_user = UserModel(
             username=data['username'],
             password=UserModel.generate_hash(data['password']),
-            service_id=data['service_id']
+            email=data.get('email', None),
+            name=data.get('name', None),
+            fname=data.get('fname', None),
+            photo_link=data.get('photo_link', None),
+            service_id=data.get('service_id', None),
+            role_id=data.get('role_id', None),
         )
 
         try:

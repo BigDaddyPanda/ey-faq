@@ -3,12 +3,14 @@ from flask import Flask, request, redirect, url_for, send_from_directory, jsonif
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
 from uuid import uuid4
-from config import app,UPLOAD_FOLDER
-
-# UPLOAD_FOLDER = r"D:\Work\Nizar Vue\Backend\img"
-# if not os.path.isdir(UPLOAD_FOLDER):
-#     os.mkdir(UPLOAD_FOLDER)
+from config import app, UPLOAD_FOLDER
+app = Flask(__name__)
+CORS(app)
+UPLOAD_FOLDER = r"D:\Work\Nizar Vue\Backend\img"
+if not os.path.isdir(UPLOAD_FOLDER):
+    os.mkdir(UPLOAD_FOLDER)
 ALLOWED_EXTENSIONS = set(["txt", "pdf", "png", "jpg", "jpeg", "gif"])
+
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -38,7 +40,7 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = str(uuid4())+"."+file.filename.rsplit(".", 1)[1].lower()
             # filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            file.save(os.path.join(UPLOAD_FOLDER, filename))
             # return redirect(url_for("upload_file", filename=filename))
             return jsonify(url=f"http://127.0.0.1:5000/downloader?filename={filename}")
     return """

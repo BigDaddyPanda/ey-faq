@@ -14,6 +14,19 @@ parser.add_argument(
     'role_id', help='This field cannot be blank', required=True)
 
 
+"""
+UserModel
+    username
+    email
+    password
+    name
+    fname
+    photo_link
+    service_id
+    role_id
+"""
+
+
 class UserRegistration(Resource):
     def post(self):
         data = parser.parse_args()
@@ -24,8 +37,12 @@ class UserRegistration(Resource):
         new_user = UserModel(
             username=data['username'],
             password=UserModel.generate_hash(data['password']),
-            service_id=data['service_id'],
-            role_id=data['role_id']
+            email=data.get('email', None),
+            name=data.get('name', None),
+            fname=data.get('fname', None),
+            photo_link=data.get('photo_link', None),
+            service_id=data.get('service_id', None),
+            role_id=data.get('role_id', None),
         )
 
         try:
@@ -33,7 +50,7 @@ class UserRegistration(Resource):
             access_token = create_access_token(identity=data['username'])
             refresh_token = create_refresh_token(identity=data['username'])
             return {
-                'message': f"User {(data['username'])} was created under the role{new_user.role.designation}",
+                'message': f"{(data['username'])} New {new_user.role.designation}",
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }

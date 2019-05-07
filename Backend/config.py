@@ -1,7 +1,7 @@
+from flask import Flask
 from flaskext.mysql import MySQL
 from flask_jwt_extended import JWTManager
-
-from flask import Flask
+from flask_mail import Mail
 from flask_cors import CORS, cross_origin
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -31,7 +31,21 @@ if not os.path.isdir(UPLOAD_FOLDER):
     os.mkdir(UPLOAD_FOLDER)
 ALLOWED_EXTENSIONS = set(["txt", "pdf", "png", "jpg", "jpeg", "gif"])
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="static")
+
+app.config.update(
+    # DEBUG=True,
+    # EMAIL SETTINGS
+    # MAIL_SERVER="smtp.gmail.com",
+    MAIL_SERVER="some.mail.server",
+    # MAIL_PORT=465,
+    MAIL_PORT=6969,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME="my@emai.com",
+    MAIL_PASSWORD="mypassword",
+)
+
+mail = Mail(app)
 api = Api(app)
 CORS(app)
 
@@ -63,13 +77,13 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 # Upload folder
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# The manager will handle external scripts such as the ones used 
+# The manager will handle external scripts such as the ones used
 # for Migration management
 # thanks to this manager, now you can run these commands
 
 # python app.py db init
 # python app.py db migrate
-# python app.py db upgrade 
+# python app.py db upgrade
 
 # or simply
 # flask db init
