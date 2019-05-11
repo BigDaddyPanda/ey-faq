@@ -3,8 +3,9 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, Boolean, Text, DateTime, Table, ForeignKey
 
+from . import Base
 
-class AttachementModel(db.Model):
+class AttachementModel(Base):
     __tablename__ = 'attachements'
     id = Column(Integer, primary_key=True)
     link = Column(String(120), nullable=False)

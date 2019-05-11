@@ -37,11 +37,9 @@
  import VuetablePagination from 'vuetable-2/src/components/VuetablePagination';
  import VueTablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo';
 
- import { Editor } from 'tiptap'
 
  const globalComponents = {
    install(Vue) {
-     Vue.component(Editor.name, Editor);
      Vue.component("vuetable", Vuetable);
      Vue.component("vuetable-pagination", VuetablePagination);
      Vue.component("vuetable-pagination-info", VueTablePaginationInfo);

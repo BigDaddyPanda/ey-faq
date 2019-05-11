@@ -3,7 +3,10 @@ from passlib.hash import pbkdf2_sha256 as sha256
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, Boolean, Text, DateTime
 
-class CommentModel(db.Model):
+from . import Base
+
+
+class CommentModel(Base):
     __tablename__ = 'comments'
 
     id = Column(Integer, primary_key=True)
@@ -23,6 +26,6 @@ class CommentModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    @classmethod
-    def find_by_content(cls, content):
-        return cls.query.filter_by(content=content).first()
+    # @classmethod
+    # def find_by_username(cls, username):
+    #     return cls.query.filter_by(username=username).first()

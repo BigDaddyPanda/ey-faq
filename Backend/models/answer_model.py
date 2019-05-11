@@ -2,9 +2,9 @@ from config import db
 from passlib.hash import pbkdf2_sha256 as sha256
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, Boolean, Text, DateTime, Table, ForeignKey
+from . import Base
 
-
-class AnswersModel(db.Model):
+class AnswersModel(Base):
     __tablename__ = 'answers'
 
     id = Column(Integer, primary_key=True)

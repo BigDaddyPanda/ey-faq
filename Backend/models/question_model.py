@@ -2,15 +2,10 @@ from config import db
 from passlib.hash import pbkdf2_sha256 as sha256
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, Boolean, Text, DateTime, Table, ForeignKey
-
-question_thumb_ups_table = Table(
-    'question_thumb_ups',
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('question_id', Integer, ForeignKey('questions.id'))
-)
+from . import user_model, Base
 
 
-class QuestionModel(db.Model):
+class QuestionModel(Base):
     __tablename__ = 'questions'
 
     id = Column(Integer, primary_key=True)
@@ -21,21 +16,25 @@ class QuestionModel(db.Model):
     visited = Column(Integer, default=1)
 
     # ORM References
-    supporters = relationship("UserModel", secondary=question_thumb_ups_table)
-    
+    # thumbups = relationship("ThumbUpsModel", back_populates="question")
+    supporters = relationship(
+        "UserModel", secondary=user_model.question_thumb_ups_table)
+
     question_answers = relationship("AnswersModel", back_populates="question")
     question_attachements = relationship(
         "AttachementModel", back_populates="question")
 
     publisher_id = Column(Integer, db.ForeignKey('users.id'))
     publisher = relationship(
-        "UserModel", back_populates="user_published_questions")
+        "UserModel",
+        foreign_keys=[publisher_id],
+        back_populates="user_published_questions")
     date_ajout = Column(DateTime, nullable=True)
 
     edited = Column(Boolean, nullable=True)
     editor_id = Column(Integer, db.ForeignKey('users.id'), nullable=False)
     editor = relationship(
-        "UserModel", back_populates="user_edited_questions")
+        "UserModel", foreign_keys=[editor_id], back_populates="user_edited_questions")
 
     def save_to_db(self):
         db.session.add(self)

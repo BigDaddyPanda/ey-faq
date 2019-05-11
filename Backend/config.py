@@ -5,7 +5,7 @@ from flask_mail import Mail
 from flask_cors import CORS, cross_origin
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
 import os
@@ -60,7 +60,7 @@ mysql = MySQL()
 # mysql.init_app(app)
 
 # SQLALCHEMY Config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/sampledb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/eyfaq'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'some-secret-string'
 
@@ -89,5 +89,5 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 # flask db init
 # flask db migrate
 # flask db upgrade
-
 manager = Manager(app)
+manager.add_command('db', MigrateCommand)
