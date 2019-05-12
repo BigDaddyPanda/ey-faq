@@ -12,5 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   comment.associate = function(models) {
     // associations can be defined here
   };
+  const sequelizePaginate = require('sequelize-paginate');
+  sequelizePaginate.paginate(comment)
   return comment;
 };

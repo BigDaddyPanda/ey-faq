@@ -21,7 +21,6 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(passport.initialize());
 app.use(express.static("app/public"));
-
 require('./app/api/user/loginUser')(app);
 require('./app/api/user/registerUser')(app);
 require('./app/api/user/forgotPassword')(app);
@@ -32,7 +31,11 @@ require('./app/api/user/findUsers')(app);
 require('./app/api/user/deleteUser')(app);
 require('./app/api/user/updateUser')(app);
 
+const genericDataTable = require('./app/api/genericDataTable');
+
+
 // eslint-disable-next-line no-console
+
 
 // {force: true} for the hard times
 db.sequelize.sync().then(() => {
@@ -61,6 +64,13 @@ db.sequelize.sync().then(() => {
         service_id:1,
         role_id:1
     })
+    genericDataTable(app,db.service,"service");
+    genericDataTable(app,db.question,"question");
+    genericDataTable(app,db.answer,"answer");
+    genericDataTable(app,db.attachement,"attachement");
+    genericDataTable(app,db.post,"post");
+    genericDataTable(app,db.comment,"comment");
+    genericDataTable(app,db.user,"user");
     console.clear()
     console.log("Data Base and Models Created and Mapped Successfully")
     app.listen(API_PORT, () => console.log(`Listening on port ${API_PORT}`));

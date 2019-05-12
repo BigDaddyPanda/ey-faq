@@ -65,5 +65,7 @@ module.exports = (sequelize, type) => {
             through: models.user_post
         });
     };
+    const sequelizePaginate = require('sequelize-paginate');
+    sequelizePaginate.paginate(user)
     return user;
 }

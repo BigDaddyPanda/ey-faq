@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     })
     question.hasMany(models.attachement, {
       as: 'attachements'
-    })
+    }) 
 
     // https://sequelize.readthedocs.io/en/v3/api/associations/belongs-to-many/
     question.belongsToMany(models.user, {

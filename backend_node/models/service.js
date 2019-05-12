@@ -11,5 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   service.associate = function(models) {
     // associations can be defined here
   };
+  const sequelizePaginate = require('sequelize-paginate');
+  sequelizePaginate.paginate(service)
   return service;
 };

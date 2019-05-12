@@ -1,16 +1,16 @@
 const emailer = require("../../tools/email");
 
 module.exports = (app, db) => {
-  app.get("/posts", (req, res) =>
-    db.post.findAll().then((result) => res.json(result))
+  app.get("/answers", (req, res) =>
+    db.answer.findAll().then((result) => res.json(result))
   );
 
-  app.get("/post/:id", (req, res) =>
-    db.post.findById(req.params.id).then((result) => res.json(result))
+  app.get("/answer/:id", (req, res) =>
+    db.answer.findById(req.params.id).then((result) => res.json(result))
   );
 
-  app.post("/post", (req, res) =>
-    db.post.create({
+  app.post("/answer", (req, res) =>
+    db.answer.create({
       title: req.body.title,
       content: req.body.content
     }).then((result) => {
@@ -18,8 +18,8 @@ module.exports = (app, db) => {
     })
   );
 
-  app.put("/post/:id", (req, res) =>
-    db.post.update({
+  app.put("/answer/:id", (req, res) =>
+    db.answer.update({
       /**
        * Other stuff to update
        */
@@ -30,14 +30,14 @@ module.exports = (app, db) => {
       }
     }).then((result) => {
       let to = db.user.findById(result.userId),
-      text = `${req.body.username} has edited your post!`
+      text = `${req.body.username} has edited your answer!`
       emailer(to,text)
       res.json(result)
     })
   );
 
-  app.delete("/post/:id", (req, res) =>
-    db.post.destroy({
+  app.delete("/answer/:id", (req, res) =>
+    db.answer.destroy({
       where: {
         id: req.params.id
       }
