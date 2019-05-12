@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 import crypto from 'crypto';
+import db from "../../../models"
 
 require('dotenv').config();
 

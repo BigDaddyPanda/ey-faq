@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
+import db from "../../../models"
 import Sequelize from 'sequelize';
 
 // eslint-disable-next-line prefer-destructuring

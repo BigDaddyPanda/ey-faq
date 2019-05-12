@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import bcrypt from 'bcrypt';
 import Sequelize from 'sequelize';
+import db from "../../../models"
 
 // eslint-disable-next-line prefer-destructuring
 const Op = Sequelize.Op;

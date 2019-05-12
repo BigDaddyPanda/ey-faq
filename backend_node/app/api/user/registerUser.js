@@ -1,7 +1,7 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-console */
 import passport from 'passport';
-
+import db from "../../../models"
 /**
  * @swagger
  * /registerUser:

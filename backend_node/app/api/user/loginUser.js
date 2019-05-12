@@ -2,6 +2,7 @@
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import jwtSecret from '../../../config/jwtConfig';
+import db from "../../../models"
 
 /**
  * @swagger

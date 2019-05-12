@@ -4,6 +4,7 @@
 import bcrypt from 'bcrypt';
 import Sequelize from 'sequelize';
 import jwtSecret from './jwtConfig';
+import db from "../models"
 
 const BCRYPT_SALT_ROUNDS = 12;
 // eslint-disable-next-line prefer-destructuring
