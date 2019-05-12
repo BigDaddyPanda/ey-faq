@@ -9,16 +9,16 @@
           <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
 
           <div class="text-center offset-md-2 col-md-12 col-lg-8">
-            <a
-              href="#download"
+            <router-link
+              to="/auth"
               class="btn btn-primary btn-lg btn-round"
               role="button"
-            >Download The App</a>
-            <a
-              href="#know_more"
+            >Join the EY Community</router-link>
+            <router-link
+              to="/ask"
               class="btn btn-secondary btn-lg btn-round"
               role="button"
-            >Know More About US</a>
+            >Dive through the FAQ</router-link>
           </div>
         </div>
       </div>
@@ -90,21 +90,22 @@ import DownloadSection from "./components/DownloadSection";
 export default {
   name: "index",
   bodyClass: "index-page",
-  components: {
-    Parallax,
-    BasicElements,
-    Navigation,
-    TabsSection,
-    ProgressPagination,
-    Notifications,
-    Typography,
-    JavascriptComponents,
-    CarouselSection,
-    NucleoIconsSection,
-    SignupForm,
-    ExamplesSection,
-    DownloadSection
-  }
+  // components: {
+  //   Parallax,
+  //   BasicElements,
+  //   Navigation,
+  //   TabsSection,
+  //   ProgressPagination,
+  //   Notifications,
+  //   Typography,
+  //   JavascriptComponents,
+  //   CarouselSection,
+  //   NucleoIconsSection,
+  //   SignupForm,
+  //   ExamplesSection,
+  //   DownloadSection
+  // },
+
 };
 </script>
 <style></style>

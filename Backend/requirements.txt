@@ -14,6 +14,7 @@ Flask-Migrate
 Flask-Moment
 flask-RESTful
 flask-Mail
+flask-login
 Flask-Script
 Flask-SQLAlchemy
 Flask-WTF

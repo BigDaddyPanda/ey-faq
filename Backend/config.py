@@ -7,6 +7,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
+from flask_login import LoginManager
 
 import os
 
@@ -91,3 +92,6 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 # flask db upgrade
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
+login_manager = LoginManager()
+login_manager.init_app(app)

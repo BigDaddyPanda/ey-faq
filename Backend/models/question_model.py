@@ -16,10 +16,11 @@ class QuestionModel(Base):
     visited = Column(Integer, default=1)
 
     # ORM References
-    # thumbups = relationship("ThumbUpsModel", back_populates="question")
-    supporters = relationship(
-        "UserModel", secondary=user_model.question_thumb_ups_table)
-
+    supports = relationship(
+        "UserModel",
+        user_model.question_thumb_ups_table,
+        back_populates="supports")
+        
     question_answers = relationship("AnswersModel", back_populates="question")
     question_attachements = relationship(
         "AttachementModel", back_populates="question")
@@ -39,6 +40,3 @@ class QuestionModel(Base):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-    # @classmethod
-    # def find_by_designation(cls, designation):
-    #     return cls.query.filter_by(designation=designation).first()

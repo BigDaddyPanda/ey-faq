@@ -65,9 +65,9 @@
             <ul v-html="error_message">{{error_message}}</ul>
           </div>
           <div class="card-footer text-center">
-              <n-button type="neutral" @click="submit_form()" round size="lg">Sign-up</n-button>
+            <n-button type="neutral" @click="submit_form()" round size="lg">Sign-up</n-button>
             <br>
-            <router-link :to='{name:"login-view"}'>
+            <router-link :to="{name:'login-view'}">
               <n-button type="neutral" round size="xs" link>Already have an account?</n-button>
             </router-link>
           </div>
@@ -78,6 +78,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -89,29 +91,40 @@ export default {
     };
   },
   methods: {
+    ...mapActions("account", ["register"]),
     errormessage() {
       let usernameRegex = /^[a-z0-9\_]+$/i;
       let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-      let error_message = "";
+      let x = "";
       // return this.C_Password == this.Password ? "has-danger" : "has-success";
       if (!this.Username.match(usernameRegex))
-        error_message +=
+        x +=
           "<li>UserName: Only AlphaNumeric characters with Underscores allowed</li>";
       if (!this.Email.match(emailRegex))
-        error_message +=
-          "<li>Your Email does not respect standard Email Form!</li>";
+        x += "<li>Your Email does not respect standard Email Form!</li>";
       if (this.Password.length <= 6)
-        error_message +=
-          " <li>Password Length Should be more than 6 characters!</li>";
+        x += " <li>Password Length Should be more than 6 characters!</li>";
       if (this.Password != this.C_Password)
-        error_message += "<li>Password does not match!</li>";
-      return error_message;
+        x += "<li>Password does not match!</li>";
+      return x;
     },
     submit_form() {
-      this.error_message = this.errormessage();
+      this.az = this.errormessage();
+      console.log("submit",this.az);
+      
+      if (this.az == "") {
+        let user = {
+          username: this.Username,
+          password: this.Password,
+          email: this.Email
+        };
+        this.register(user);
+      }
     }
   },
-  computed: {}
+  computed: {
+    ...mapState("account", ["status"])
+  }
 };
 </script>
 

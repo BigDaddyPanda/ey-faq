@@ -1,5 +1,9 @@
+import resources.roles_resource as role_resources
+import resources.service_resources as service_resources
+import resources.resources as user_resources
+import models.user_model as user_model
 from config import db, app, jwt, api, manager
-from utilz import ts
+from featured import ts
 
 
 @app.before_first_request
@@ -27,11 +31,8 @@ def confirm_email(token):
     db.session.add(user)
     db.session.commit()
 
-    return redirect(url_for('signin'))
-
-
-import models.user_model as user_model
-import resources.resources as user_resources, resources.service_resources as service_resources,resources.roles_resource as role_resources
+    # return redirect(url_for('signin'))
+    return "Registered! Ok"
 
 
 api.add_resource(user_resources.UserRegistration, '/registration')

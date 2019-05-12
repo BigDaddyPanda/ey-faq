@@ -9,9 +9,9 @@ parser.add_argument(
 parser.add_argument(
     'password', help='This field cannot be blank', required=True)
 parser.add_argument(
-    'service_id', help='This field cannot be blank', required=True)
+    'service_id', help='This field cannot be blank', required=False)
 parser.add_argument(
-    'role_id', help='This field cannot be blank', required=True)
+    'role_id', help='This field cannot be blank', required=False)
 
 
 """
@@ -43,12 +43,15 @@ class UserRegistration(Resource):
             photo_link=data.get('photo_link', None),
             service_id=data.get('service_id', None),
             role_id=data.get('role_id', None),
+            is_authenticated=False,
+            is_active=True,
         )
 
         try:
             new_user.save_to_db()
             access_token = create_access_token(identity=data['username'])
             refresh_token = create_refresh_token(identity=data['username'])
+
             return {
                 'message': f"{(data['username'])} New {new_user.role.designation}",
                 'access_token': access_token,
@@ -109,6 +112,10 @@ class TokenRefresh(Resource):
         access_token = create_access_token(identity=current_user)
         return {'access_token': access_token}
 
+
+class UserAuthManager(Resource):
+    def get(self):
+        return {"message":"Hey"}
 
 class AllUsers(Resource):
     def get(self):

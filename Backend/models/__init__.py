@@ -5,6 +5,15 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+from .post_model import PostModel
+from .question_model import QuestionModel
+from .user_model import ServiceModel, RoleModel, UserModel
+from .comment_model import CommentModel
+from .answer_model import AnswersModel
+from .attachement_model import AttachementModel
+
+
+
 
 """
 This is your model folder

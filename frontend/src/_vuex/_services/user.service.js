@@ -1,6 +1,10 @@
 // import config from 'config';
-import { authHeader } from '../_helpers';
-import { backend_entry_point } from './api.services';
+import {
+    authHeader
+} from '../_helpers';
+import {
+    backend_entry_point
+} from './api.services';
 
 
 export const userService = {
@@ -16,11 +20,16 @@ export const userService = {
 function login(username, password) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username,
+            password
+        })
     };
 
-    return fetch(`${backend_entry_point}/users/authenticate`, requestOptions)
+    return fetch(`${backend_entry_point}users/authenticate`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response
@@ -39,13 +48,19 @@ function logout() {
 }
 
 function register(user) {
+    console.log(user);
+    
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(user)
     };
 
-    return fetch(`${backend_entry_point}/users/register`, requestOptions).then(handleResponse);
+    return fetch(`${backend_entry_point}registration`, requestOptions).
+        then(handleResponse).then(data => console.log(data)).
+        catch(err => console.log(err));
 }
 
 function getAll() {
@@ -54,7 +69,7 @@ function getAll() {
         headers: authHeader()
     };
 
-    return fetch(`${backend_entry_point}/users`, requestOptions).then(handleResponse);
+    return fetch(`${backend_entry_point}users`, requestOptions).then(handleResponse);
 }
 
 
@@ -64,17 +79,20 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`${backend_entry_point}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${backend_entry_point}users/${id}`, requestOptions).then(handleResponse);
 }
 
 function update(user) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        headers: {
+            ...authHeader(),
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify(user)
     };
 
-    return fetch(`${backend_entry_point}/users/${user.id}`, requestOptions).then(handleResponse);
+    return fetch(`${backend_entry_point}users/${user.id}`, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -84,7 +102,7 @@ function _delete(id) {
         headers: authHeader()
     };
 
-    return fetch(`${backend_entry_point}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${backend_entry_point}users/${id}`, requestOptions).then(handleResponse);
 }
 
 export function handleResponse(response) {

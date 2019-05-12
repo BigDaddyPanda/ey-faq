@@ -2,7 +2,8 @@ from config import db
 from passlib.hash import pbkdf2_sha256 as sha256
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, Boolean, Text, DateTime
-from . import Base
+from . import Base, user_model
+
 
 class PostModel(Base):
     __tablename__ = 'posts'
@@ -29,11 +30,14 @@ class PostModel(Base):
                           foreign_keys=[editor_id],
                           back_populates="user_edited_posts")
 
+    thumbupers = relationship(
+        "UserModel",
+        secondary=user_model.post_thumb_ups_table,
+        back_populates="thumbups")
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
     # @classmethod
     # def find_by_designation(cls, designation):
     #     return cls.query.filter_by(designation=designation).first()
-
-

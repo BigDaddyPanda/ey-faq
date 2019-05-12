@@ -6,6 +6,20 @@ from sqlalchemy import Column, String, Integer, Column, String, Integer, Boolean
 # from question_answer_model import QuestionModel, AnswersModel
 from . import Base
 
+question_thumb_ups_table = Table(
+    'question_thumb_ups',
+    Base.metadata,
+    Column('user_id', Integer, ForeignKey('users.id')),
+    Column('question_id', Integer, ForeignKey('questions.id'))
+)
+
+post_thumb_ups_table = Table(
+    'post_thumb_ups',
+    Base.metadata,
+    Column('user_id', Integer, ForeignKey('users.id')),
+    Column('post_id', Integer, ForeignKey('posts.id'))
+)
+
 
 class ServiceModel(Base):
     __tablename__ = 'services'
@@ -19,7 +33,7 @@ class ServiceModel(Base):
 
     @classmethod
     def find_by_designation(cls, designation):
-        return cls.query.filter_by(designation=designation).first()
+        return db.session.query(cls).filter_by(designation=designation).first()
 
 
 class RoleModel(Base):
@@ -34,7 +48,7 @@ class RoleModel(Base):
 
     @classmethod
     def find_by_designation(cls, designation):
-        return cls.query.filter_by(designation=designation).first()
+        return db.session.query(cls).filter_by(designation=designation).first()
 
 
 class UserModel(Base):
@@ -44,6 +58,8 @@ class UserModel(Base):
     username = Column(String(120), unique=True, nullable=False)
     email = Column(String(120), unique=True, nullable=False)
     password = Column(String(120), nullable=False)
+    is_authenticated = Column(Boolean, nullable=False)
+    is_active = Column(Boolean, nullable=False)
 
     name = Column(String(120), nullable=True)
     fname = Column(String(120), nullable=True)
@@ -68,13 +84,23 @@ class UserModel(Base):
 
     # thumbups = relationship("ThumbUpsModel", back_populates="user")
 
+    supports = relationship(
+        "QuestionModel",
+        secondary=question_thumb_ups_table,
+        back_populates="supporters")
+
+    thumbups = relationship(
+        "PostModel",
+        secondary=post_thumb_ups_table,
+        back_populates="thumbupers")
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def find_by_username(cls, username):
-        return cls.query.filter_by(username=username).first()
+        return db.session.query(cls).filter_by(username=username).first()
 
     @classmethod
     def return_all(cls):
@@ -118,164 +144,3 @@ class RevokedTokenModel(Base):
     def is_jti_blacklisted(cls, jti):
         query = cls.query.filter_by(jti=jti).first()
         return bool(query)
-
-
-###
-
-
-# class PostModel(Base):
-#     __tablename__ = 'posts'
-#     id = Column(Integer, primary_key=True)
-#     title = Column(String(120), nullable=False)
-#     description = Column(Text, nullable=False)
-#     content = Column(Text, nullable=True)
-
-#     visited = Column(Integer, default=1)
-
-#     # ORM References
-#     post_comments = relationship("CommentModel", back_populates="post")
-
-#     publisher_id = Column(Integer, db.ForeignKey('users.id'))
-#     publisher = relationship(
-#         "UserModel",
-#         foreign_keys=[publisher_id],
-#         back_populates="user_published_posts")
-#     date_ajout = Column(DateTime, nullable=True)
-
-#     edited = Column(Boolean, nullable=True)
-#     editor_id = Column(Integer, db.ForeignKey('users.id'), nullable=False)
-#     editor = relationship("UserModel",
-#                           foreign_keys=[editor_id],
-#                           back_populates="user_edited_posts")
-
-#     def save_to_db(self):
-#         db.session.add(self)
-#         db.session.commit()
-#     # @classmethod
-#     # def find_by_designation(cls, designation):
-#     #     return cls.query.filter_by(designation=designation).first()
-
-
-# class CommentModel(Base):
-#     __tablename__ = 'comments'
-
-#     id = Column(Integer, primary_key=True)
-#     content = Column(Text, nullable=True)
-#     edited = Column(Boolean, default=False, nullable=True)
-
-#     # ORM References
-
-#     post_id = Column(Integer, db.ForeignKey('users.id'))
-#     post = relationship("PostModel", back_populates="post_comments")
-
-#     commentator_id = Column(Integer, db.ForeignKey('users.id'))
-#     commentator = relationship("UserModel", back_populates="user_comments")
-#     date_ajout = Column(DateTime, nullable=True)
-
-#     def save_to_db(self):
-#         db.session.add(self)
-#         db.session.commit()
-
-#     @classmethod
-#     def find_by_username(cls, username):
-#         return cls.query.filter_by(username=username).first()
-
-
-# class AttachementModel(Base):
-#     __tablename__ = 'attachements'
-#     id = Column(Integer, primary_key=True)
-#     link = Column(String(120), nullable=False)
-
-#     # ORM References
-#     question_id = Column(Integer, db.ForeignKey('questions.id'))
-#     question = relationship(
-#         "QuestionModel", back_populates="question_attachements")
-
-#     def save_to_db(self):
-#         db.session.add(self)
-#         db.session.commit()
-
-
-question_thumb_ups_table = Table(
-    'question_thumb_ups',
-    Base.metadata,
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('question_id', Integer, ForeignKey('questions.id'))
-)
-
-
-# class ThumbUpsModel(Base):
-#     __tablename__ = 'thumbups'
-#     id = Column(Integer, primary_key=True)
-
-#     user_id = Column(Integer, db.ForeignKey('users.id'), nullable=False)
-#     user = relationship(
-#         "UserModel", back_populates="thumbups")
-#     question_id = Column(Integer, db.ForeignKey(
-#         'questions.id'), nullable=False)
-#     question = relationship(
-#         "QuestionModel", back_populates="thumbups")
-
-
-# class QuestionModel(Base):
-#     __tablename__ = 'questions'
-
-#     id = Column(Integer, primary_key=True)
-#     subject = Column(String(120), nullable=False)
-#     description = Column(Text, nullable=False)
-#     content = Column(Text, nullable=True)
-
-#     visited = Column(Integer, default=1)
-
-#     # ORM References
-#     # thumbups = relationship("ThumbUpsModel", back_populates="question")
-#     supporters = relationship("UserModel", secondary=question_thumb_ups_table)
-
-#     question_answers = relationship("AnswersModel", back_populates="question")
-#     question_attachements = relationship(
-#         "AttachementModel", back_populates="question")
-
-#     publisher_id = Column(Integer, db.ForeignKey('users.id'))
-#     publisher = relationship(
-#         "UserModel",
-#         foreign_keys=[publisher_id],
-#         back_populates="user_published_questions")
-#     date_ajout = Column(DateTime, nullable=True)
-
-#     edited = Column(Boolean, nullable=True)
-#     editor_id = Column(Integer, db.ForeignKey('users.id'), nullable=False)
-#     editor = relationship(
-#         "UserModel", foreign_keys=[editor_id], back_populates="user_edited_questions")
-
-#     def save_to_db(self):
-#         db.session.add(self)
-#         db.session.commit()
-#     # @classmethod
-#     # def find_by_designation(cls, designation):
-#     #     return cls.query.filter_by(designation=designation).first()
-
-
-# class AnswersModel(Base):
-#     __tablename__ = 'answers'
-
-#     id = Column(Integer, primary_key=True)
-#     content = Column(Text, nullable=True)
-#     edited = Column(Boolean, default=False, nullable=True)
-
-#     # ORM References
-
-#     question_id = Column(Integer, db.ForeignKey('questions.id'))
-#     question = relationship(
-#         "QuestionModel", back_populates="question_answers")
-
-#     answerer_id = Column(Integer, db.ForeignKey('users.id'))
-#     answerer = relationship("UserModel", back_populates="user_answers")
-#     date_ajout = Column(DateTime, nullable=True)
-
-#     def save_to_db(self):
-#         db.session.add(self)
-#         db.session.commit()
-
-#     @classmethod
-#     def find_by_username(cls, username):
-#         return cls.query.filter_by(username=username).first()

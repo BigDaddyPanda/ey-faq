@@ -1,29 +1,29 @@
 <template>
   <div class="justify-content-md-center">
-    <div class="row">
-      <div class="col-xs-12 col-md-2">
+    <div class="row justify-content-md-center">
+      <!-- <div class="col-xs-12 col-md-2">
         <tabs type="primary" vertical class="row" v-model="activeTab">
           <n-button href="#" v-scroll-to="'#Overview'" @click="activeTab='Overview'" block>
-            <!-- <tab-pane label="Overview">
+            <tab-pane label="Overview">
               <span slot="label">
                 <i class="now-ui-icons education_paper"></i>
               </span>
-            </tab-pane>-->
+            </tab-pane> 
             Overview
           </n-button>
           <n-button href="#" v-scroll-to="'#Answer'" @click="activeTab='Answer'" block>
-            <!-- <tab-pane label="Answer" v-scroll-to="'#Answer'">
+            <tab-pane label="Answer" v-scroll-to="'#Answer'">
               <span slot="label">
                 <i class="now-ui-icons objects_key-25"></i>
               </span>
-            </tab-pane>-->
+            </tab-pane> 
             Answer
           </n-button>
         </tabs>
-      </div>
-      <div class="col-xs-12 col-md-10" ref="Overview" id="Overview">
+      </div> -->
+      <div class="col-xs-10 col-md-10" ref="Overview" id="Overview">
         <card type="blog" :plain="activeTab!='Overview'" class="pt-0">
-          <h2 class="py-0 my-0 text-left">Overview {{activeTab}}</h2>
+          <h2 class="py-0 my-0 text-left">Overview </h2>
           <div class="card-body" style="padding-top: 0px;margin-top: -2rem;">
             <h6 class="category text-warning text-right">
               <n-button type="primary" icon round>
