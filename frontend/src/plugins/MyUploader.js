@@ -29,7 +29,7 @@ export class MyUploadAdapter {
         // integration to choose the right communication channel. This example uses
         // a POST request with JSON as a data structure but your configuration
         // could be different.
-        xhr.open('POST', 'http://127.0.0.1:5000/uploader', true);
+        xhr.open('POST', 'http://127.0.0.1:5000/uploadfile', true);
         xhr.responseType = 'json';
     }
 

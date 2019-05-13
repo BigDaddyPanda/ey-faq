@@ -1,7 +1,9 @@
 /* eslint-disable arrow-parens */
 /* eslint-disable no-console */
+import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import db from "../../../models"
+import jwtSecret from '../../../config/jwtConfig';
 /**
  * @swagger
  * /registerUser:
@@ -75,9 +77,23 @@ module.exports = app => {
                 last_name: data.last_name,
                 email: data.email,
               })
-              .then(() => {
+              .then((u) => {
                 console.log('user created in db');
-                res.status(200).send({ message: 'user created' });
+                const token = jwt.sign({
+                  id: u.id
+                }, jwtSecret.secret);
+
+                let user = {
+                  username: u.username,
+                  first_name: u.first_name,
+                  last_name: u.last_name,
+                  email: u.email,
+                  token,
+                }
+                res.status(200).send({
+                  message: 'user created',
+                  user
+                });
               });
           });
         });

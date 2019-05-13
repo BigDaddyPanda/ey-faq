@@ -1,16 +1,16 @@
 const emailer = require("../../tools/email");
 
 module.exports = (app, db) => {
-  app.get("/comments", (req, res) =>
-    db.comment.findAll().then((result) => res.json(result))
+  app.get("/attachements", (req, res) =>
+    db.attachement.findAll().then((result) => res.json(result))
   );
 
-  app.get("/comment/:id", (req, res) =>
-    db.comment.findByPk(req.params.id).then((result) => res.json(result))
+  app.get("/attachement/:id", (req, res) =>
+    db.attachement.findByPk(req.params.id).then((result) => res.json(result))
   );
 
-  app.post("/comment", (req, res) =>
-    db.comment.create({
+  app.post("/attachement", (req, res) =>
+    db.attachement.create({
       title: req.body.title,
       content: req.body.content
     }).then((result) => {
@@ -18,8 +18,8 @@ module.exports = (app, db) => {
     })
   );
 
-  app.put("/comment/:id", (req, res) =>
-    db.comment.update({
+  app.put("/attachement/:id", (req, res) =>
+    db.attachement.update({
       /**
        * Other stuff to update
        */
@@ -30,14 +30,14 @@ module.exports = (app, db) => {
       }
     }).then((result) => {
       let to = db.user.findByPk(result.userId),
-      text = `${req.body.username} has edited your comment!`
+      text = `${req.body.username} has edited your post!`
       emailer(to,text)
       res.json(result)
     })
   );
 
-  app.delete("/comment/:id", (req, res) =>
-    db.comment.destroy({
+  app.delete("/attachement/:id", (req, res) =>
+    db.attachement.destroy({
       where: {
         id: req.params.id
       }

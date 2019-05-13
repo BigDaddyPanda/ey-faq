@@ -25,5 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       through: models.user_question
     });
   };
+  const sequelizePaginate = require('sequelize-paginate');
+  sequelizePaginate.paginate(question)
   return question;
 };

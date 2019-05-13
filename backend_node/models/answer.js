@@ -14,5 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     // reaction join
     answer.belongsToMany(models.user, { through: models.user_answer });
   };
+  const sequelizePaginate = require('sequelize-paginate');
+  sequelizePaginate.paginate(answer)
   return answer;
 };

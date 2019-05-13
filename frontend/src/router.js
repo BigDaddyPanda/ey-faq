@@ -21,6 +21,8 @@ import EditArticle from './pages/Admin/EditArticle.vue';
 import ManageArticles from './pages/Admin/ManageArticles.vue';
 import ManageRequests from './pages/Admin/ManageRequests.vue';
 import ManageUsers from './pages/Admin/ManageUsers.vue';
+import ManageRoles from './pages/Admin/ManageRoles.vue';
+import ManageServices from './pages/Admin/ManageServices.vue';
 // import ReportABug from './pages/Admin/ReportABug.vue';
 
 //  Ask
@@ -147,6 +149,16 @@ export default new Router({
           path: "requests",
           name: "manage-requests",
           component: ManageRequests
+        },
+        {
+          path: "roles",
+          name: "manage-roles",
+          component: ManageRoles
+        },
+        {
+          path: "services",
+          name: "manage-services",
+          component: ManageServices
         },
         {
           path: "users",

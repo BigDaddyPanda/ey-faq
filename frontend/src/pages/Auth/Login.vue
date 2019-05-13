@@ -67,14 +67,13 @@
 export default {
   data() {
     return {
-      Password: "", 
+      Password: "",
       Email: ""
     };
   },
   methods: {
     login_handler() {
-      console.log(Password,Email);
-      
+      console.log(this.Password, this.Email);
     }
   }
 };

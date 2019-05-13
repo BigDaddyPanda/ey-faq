@@ -49,7 +49,7 @@ function logout() {
 
 function register(user) {
     console.log(user);
-    
+
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -58,9 +58,13 @@ function register(user) {
         body: JSON.stringify(user)
     };
 
-    return fetch(`${backend_entry_point}registration`, requestOptions).
-        then(handleResponse).then(data => console.log(data)).
-        catch(err => console.log(err));
+    return fetch(`${backend_entry_point}registerUser`, requestOptions).
+    then(handleResponse).then(data => {
+        console.log(data)
+        let user_data= data.user;
+        localStorage.setItem("user",JSON.stringify(user_data))
+    }).
+    catch(err => console.log(err));
 }
 
 function getAll() {

@@ -6,7 +6,7 @@ module.exports = (app, db) => {
   );
 
   app.get("/question/:id", (req, res) =>
-    db.question.findById(req.params.id).then((result) => res.json(result))
+    db.question.findByPk(req.params.id).then((result) => res.json(result))
   );
 
   app.post("/question", (req, res) =>
@@ -29,7 +29,7 @@ module.exports = (app, db) => {
         id: req.params.id
       }
     }).then((result) => {
-      let to = db.user.findById(result.userId),
+      let to = db.user.findByPk(result.userId),
       text = `${req.body.username} has edited your question!`
       emailer(to,text)
       res.json(result)

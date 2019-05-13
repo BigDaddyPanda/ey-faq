@@ -11,5 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   attachement.associate = function (models) {
     // associations can be defined here
   };
+  const sequelizePaginate = require('sequelize-paginate');
+  sequelizePaginate.paginate(attachement)
+
   return attachement;
 };
