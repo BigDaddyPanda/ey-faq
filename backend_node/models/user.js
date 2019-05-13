@@ -55,11 +55,9 @@ module.exports = (sequelize, type) => {
     });
     user.associate = function (models) {
         // associations can be defined here
-        user.belongsTo(models.service,{as:'service',foreignKey:'service_id'});
-        user.belongsTo(models.role,{as:'role',foreignKey:'role_id'});
-        user.hasMany(models.attachement, {
-            as: 'files'
-        })
+        user.belongsTo(models.service);
+        user.belongsTo(models.role);
+        user.hasMany(models.attachement);
         //the post reaction association
         user.belongsToMany(models.post, {
             through: models.user_post

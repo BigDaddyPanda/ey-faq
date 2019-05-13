@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
   answer.associate = function (models) {
     // associations can be defined here
     // reaction join
-    answer.belongsToMany(models.user, { through: models.user_answer });
+    answer.belongsToMany(models.user, {
+      through: models.user_answer
+    });
   };
   const sequelizePaginate = require('sequelize-paginate');
   sequelizePaginate.paginate(answer)

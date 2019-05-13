@@ -15,6 +15,7 @@
           <button class="ui button" @click="resetFilter">Reset</button>
         </div>
       </div>
+      <button class="ui button ml-auto" @click="add_new_modal">Add New Service</button>
     </div>
     <vuetable
       ref="vuetable"
@@ -53,28 +54,67 @@
       <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
       <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
     </div>
-    <modal :show.sync="edit_modal" headerClasses="justify-content-center">
-      <h4 slot="header" class="title title-up">Service #{{focus_data.id}}</h4>
+    <modal :show.sync="view_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">Service #{{full_focus_data.id}}</h4>
+      <div class="modal-body">
+        <span class="display-5">Designation:</span>
+        <br>
+        <span class="display-4">{{full_focus_data.designation}}</span>
+        <div v-for="(role,index) in roles" :key="index" class="col-xs-12 my-0">
+          <hr>
+          <h6>{{role}}</h6>
+          <div v-if="full_focus_data.users">
+            <div
+              v-for="(user,id) in full_focus_data.users.filter(e=>e.role.designation==role)"
+              :key="id"
+            >
+              <img
+                v-lazy="'img/julie.jpg'"
+                alt="Circle Image"
+                class="rounded-circle"
+                style="width:2.5rem"
+              >
 
-      <h5>Designation:</h5>
-      <h4>{{focus_data.designation}}</h4>
+              <badge href="#" type="primary">{{user.username}}</badge>
+            </div>
+          </div>
+          <div v-else>No Assigned Employee</div>
+        </div>
+      </div>
       <template slot="footer">
-        <n-button type="danger" @click.native="view_modal = false">Close</n-button>
+        <n-button type="danger" @click.native="hide_modal()">Close</n-button>
       </template>
     </modal>
-    <modal :show.sync="view_modal" headerClasses="justify-content-center">
+    <modal :show.sync="edit_modal" headerClasses="justify-content-center">
       <h4 slot="header" class="title title-up">Modify Service</h4>
       <fg-input
-        class="col-sm-6 col-12"
-        label="Password"
+        class="col-12"
+        label="Service Designation"
         placeholder
-        :value="focus_data.id"
+        :value="focus_data.designation"
+        v-model="focus_data.designation"
         type="text"
       ></fg-input>
 
       <template slot="footer">
         <n-button type="danger" @click.native="hide_modal()">Close</n-button>
         <n-button @click="submit_action('edit')">Confirm</n-button>
+      </template>
+    </modal>
+    <modal :show.sync="create_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">Create Service</h4>
+      <fg-input
+        class="col-12"
+        label="Service Designation"
+        placeholder
+        :value="focus_data.designation"
+        v-model="focus_data.designation"
+        type="text"
+      ></fg-input>
+
+      <template slot="footer">
+        <n-button type="danger" @click.native="add_new_modal()">Close</n-button>
+        <n-button @click="submit_action('create')">Confirm</n-button>
       </template>
     </modal>
     <modal :show.sync="dele_modal" headerClasses="justify-content-center">
@@ -93,12 +133,25 @@
 import accounting from "accounting";
 import moment from "moment";
 import { nextTick } from "q";
-import router from "@/router";
+import axios from "axios";
+import { apiRes } from "@/utils";
+// import router from "@/router";
 
 export default {
+  mounted() {
+    axios.get(apiRes("roles", "")).then(resp => {
+      this.roles = resp.data.reduce((q, p) => {
+        q.push(p.designation);
+        return q;
+      }, []);
+    });
+  },
   data() {
     return {
+      roles: [],
+      create_modal: false,
       focus_data: {},
+      full_focus_data: {},
       edit_modal: false,
       view_modal: false,
       dele_modal: false,
@@ -123,12 +176,26 @@ export default {
     };
   },
   methods: {
+    getFullFocus(id) {
+      if (id == "") this.full_focus_data = {};
+      else {
+        axios
+          .get(apiRes("service", id))
+          .then(response => {
+            this.full_focus_data = response.data;
+          })
+          .catch(error => {
+            this.full_focus_data = {};
+          });
+      }
+    },
     allcap(value) {
       return value.toUpperCase();
     },
-
+    add_new_modal() {
+      this.create_modal = !this.create_modal;
+    },
     onAction(action, data, index) {
-      console.log("slot action: " + action, data.id, index);
       this.focus_data = data;
       switch (action) {
         case "delete-item":
@@ -136,12 +203,45 @@ export default {
           this.view_modal = false;
           this.dele_modal = true;
           break;
-
+        case "view-item":
+          this.edit_modal = false;
+          this.view_modal = true;
+          this.dele_modal = false;
+          this.getFullFocus(data.id);
+          break;
         default:
           this.edit_modal = true;
-          this.view_modal = action == "view-modal";
+          this.view_modal = false;
           this.dele_modal = false;
           break;
+      }
+    },
+    submit_action(act) {
+      if (act == "create") {
+        axios
+          .post(apiRes("service", ""), {
+            designation: this.focus_data.designation
+          })
+          .then(resp => {
+            this.hide_modal();
+            nextTick(() => this.$refs.vuetable.refresh());
+          });
+      } else {
+        if (act == "edit") {
+          axios
+            .put(apiRes("service", this.focus_data.id), {
+              designation: this.focus_data.designation
+            })
+            .then(resp => {
+              this.hide_modal();
+              nextTick(() => this.$refs.vuetable.refresh());
+            });
+        } else {
+          axios.delete(apiRes("service", this.focus_data.id)).then(resp => {
+            this.hide_modal();
+            nextTick(() => this.$refs.vuetable.refresh());
+          });
+        }
       }
     },
     hide_modal() {

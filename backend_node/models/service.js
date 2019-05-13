@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   service.associate = function(models) {
     // associations can be defined here
+    service.hasMany(models.user)
   };
   const sequelizePaginate = require('sequelize-paginate');
   sequelizePaginate.paginate(service)

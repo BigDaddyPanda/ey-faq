@@ -44,17 +44,17 @@ db.sequelize.sync().then(() => {
     // populate author table with dummy data
     // app.listen(8989, () => console.log("App listening on port 8080!"));
     // db.service.bulkCreate(
-    //     times(10, () => ({
+    //     times(5, () => ({
     //         designation: faker.lorem.words(1),
     //     }))
     // );
     // db.role.bulkCreate(
-    //     times(10, () => ({
+    //     times(5, () => ({
     //         designation: faker.lorem.words(1),
     //     }))
     // );
-
-    // db.user.create({
+    
+    // db.user.bulkCreate(times(50, () => ({
     //     email: faker.internet.email(),
     //     username: faker.internet.userName(),
     //     password: faker.internet.password(),
@@ -62,9 +62,9 @@ db.sequelize.sync().then(() => {
     //     last_name: faker.name.lastName(),
     //     resetPasswordToken: faker.lorem.text(100),
     //     resetPasswordExpires: faker.lorem.text(100),
-    //     service_id:1,
-    //     role_id:1
-    // })
+    //     serviceId: random(1, 3),
+    //     roleId: random(1, 3)
+    // })))
     require("./app/api/answer")(app, db);
     require("./app/api/attachement")(app, db);
     require("./app/api/comment")(app, db);
@@ -72,6 +72,7 @@ db.sequelize.sync().then(() => {
     require("./app/api/question")(app, db);
     require("./app/api/role")(app, db);
     require("./app/api/service")(app, db);
+    require("./app/api/user")(app, db);
     genericDataTable(app, db.service, "api/service");
     genericDataTable(app, db.question, "api/question");
     genericDataTable(app, db.answer, "api/answer");

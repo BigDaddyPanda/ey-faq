@@ -1,24 +1,41 @@
 const emailer = require("../../tools/email");
-
+const sequelize = require("sequelize");
 module.exports = (app, db) => {
   app.get("/services", (req, res) =>
-    db.service.findAll().then((result) => res.json(result))
+    db.service.findAll({
+      include: [{
+        model: db.user,
+        attributes: ["username", "email"],
+        include: [{
+          model: db.role,
+          attributes: ["designation"]
+        }]
+      }],
+    }).then((result) => res.json(result))
   );
 
   app.get("/service/:id", (req, res) =>
-    db.service.findByPk(req.params.id).then((result) => res.json(result))
+    db.service.findByPk(req.params.id, {
+      include: [{
+        model: db.user,
+        attributes: ["username", "email"],
+        include: [{
+          model: db.role,
+          attributes: ["designation"]
+        }]
+      }]
+    }).then((result) => res.json(result))
   );
 
   app.post("/service", (req, res) =>
     db.service.create({
-      title: req.body.title,
-      content: req.body.content
+      designation: req.body.designation
     }).then((result) => {
       res.json(result)
     })
   );
 
-  app.put("/service/:id", (req, res) =>
+  app.put("/service/:id", (req, res) => {
     db.service.update({
       /**
        * Other stuff to update
@@ -29,7 +46,7 @@ module.exports = (app, db) => {
         id: req.params.id
       }
     }).then((result) => res.json(result))
-  );
+  });
 
   app.delete("/service/:id", (req, res) =>
     db.service.destroy({

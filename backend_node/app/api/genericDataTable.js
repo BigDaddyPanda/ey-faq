@@ -1,3 +1,8 @@
+export const asds = (x) => {
+    if (x == "asc") return "ASC"
+    if (x == "des") return "DESC"
+    return x
+}
 module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res) {
 
     let options = {
@@ -20,6 +25,9 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
                     case 'order':
                         options[key] = [element.split(',')];
                         break;
+                    case 'sort':
+                        options['order'] = [element.split('|').map(e => asds(e))];
+                        break;
                     case 'page':
                         options[key] = Number(element);
                         break;
@@ -32,8 +40,7 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
                 }
             }
         }
-        console.log(options);
-
+        console.log(options)
     }
 
     dbModel.paginate(options).then(
