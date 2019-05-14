@@ -43,9 +43,10 @@ var def_pw_hash="$2b$12$cE2AWwWhdozjhXRHyCHoTeR2INQtuefCRfHjx68NfSGxXKkuOjPyu";
 // {force: true} for the hard times
 db.sequelize.sync().then(() => {
 // db.sequelize.sync({force: true}).then(() => {
-    // populate author table with dummy data
+    // // populate author table with dummy data
     // db.service.bulkCreate(
     //     [
+    //         { designation: "General Information" },
     //         { designation: "Resources Humaines" },
     //         { designation: "Réseau et Sécurité" },
     //         { designation: "Internet et Techno" }
@@ -85,6 +86,7 @@ db.sequelize.sync().then(() => {
     require("./app/api/post")(app, db);
     require("./app/api/question")(app, db);
     require("./app/api/role")(app, db);
+    require("./app/api/globalDataProvider")(app, db);
     require("./app/api/service")(app, db);
     require("./app/api/user")(app, db);
     genericDataTable(app, db.service, "api/service");

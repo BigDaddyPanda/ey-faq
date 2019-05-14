@@ -14,14 +14,14 @@
     <template slot="navbar-menu">
       <!-- <li class="nav-item"></li> -->
       <!-- <li class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/ask/">
+        <router-link v-popover:popover1 class="nav-link" to="/fa_questions/">
           <i class="now-ui-icons travel_info"></i>
           <p>Support</p>
         </router-link>
       </li>
 
       <li class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/ask/">
+        <router-link v-popover:popover1 class="nav-link" to="/fa_questions/">
           <i class="now-ui-icons arrows-1_cloud-download-93"></i>
           <p>Download</p>
         </router-link>

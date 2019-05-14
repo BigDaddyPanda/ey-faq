@@ -3,9 +3,7 @@ import App from './App.vue';
 // You can change this import to `import router from './starterRouter'` to quickly start development from a blank layout.
 import router from './router';
 import NowUiKit from './plugins/now-ui-kit';
-import {
-  store
-} from './_vuex/_store';
+import store from './_vuex/_store';
 import VueScrollTo from 'vue-scrollto'
 import CKEditor from '@ckeditor/ckeditor5-vue';
 // MyCustomUploadAdapterPlugin

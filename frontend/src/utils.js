@@ -7,6 +7,6 @@ import {
  * @param {String} e entry poin
  * @param {any} i next path router
  */
-export const apiRes = (e, i) => {
+export const apiRes = (e="", i="") => {
     return `${backend_entry_point+e}/${i}`;
 }

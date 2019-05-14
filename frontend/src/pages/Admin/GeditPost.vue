@@ -20,7 +20,7 @@
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { MyCustomUploadAdapterPlugin } from "@/plugins/MyUploader.js";
-console.log("Hello");
+// console.log("Hello");
 // MyCustomUploadAdapterPlugin(ClassicEditor);
 
 export default {

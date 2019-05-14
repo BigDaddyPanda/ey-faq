@@ -15,46 +15,12 @@
     <div class="row justify-content-md-center">
       <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
       <div class="row">
-        <div class="col-6">
-          <blockquote>
-            <card class="card-nav-tabs" header-classes="card-header-success">
-              <blockquote class="blockquote blockquote-primary mb-0">
-                <p>Categorie</p>
-                <a href="#" class>Filter by this Categorie</a>
-              </blockquote>
-            </card>
-          </blockquote>
-        </div>
-        <div class="col-6">
-          <blockquote>
-            <card class="card-nav-tabs" header-classes="card-header-success">
-              <blockquote class="blockquote blockquote-primary mb-0">
-                <p>Categorie</p>
-                <a href="#" class>Filter by this Categorie</a>
-              </blockquote>
-            </card>
-          </blockquote>
-        </div>
-        <div class="col-6">
-          <blockquote>
-            <card class="card-nav-tabs" header-classes="card-header-success">
-              <blockquote class="blockquote blockquote-primary mb-0">
-                <p>Categorie</p>
-                <a href="#" class>Filter by this Categorie</a>
-              </blockquote>
-            </card>
-          </blockquote>
-        </div>
-        <div class="col-6">
-          <blockquote>
-            <card class="card-nav-tabs" header-classes="card-header-success">
-              <blockquote class="blockquote blockquote-primary mb-0">
-                <p>Categorie</p>
-                <a href="#" class>Filter by this Categorie</a>
-              </blockquote>
-            </card>
-          </blockquote>
-        </div>
+        <n-button type="default">Default</n-button>
+        <n-button type="primary">Primary</n-button>
+        <n-button type="info">Info</n-button>
+        <n-button type="success">Success</n-button>
+        <n-button type="warning">Warning</n-button>
+        <n-button type="danger">Danger</n-button>
       </div>
     </div>
     <div class="row justify-content-md-center">
@@ -64,7 +30,7 @@
           <ul slot="raw-content" class="list-group list-group-flush text-left">
             <li class="list-group-item">
               <router-link
-                to="/ask/question/1"
+                to="/questions/1"
               >12 Lorem ipsum dolor sit amet consectetur adipisicing elit.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
@@ -73,7 +39,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/ask/question/1"
+                to="/questions/1"
               >Molestiae pariatur accusamus fuga, officiis in neque iure.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
@@ -82,7 +48,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/ask/question/1"
+                to="/questions/1"
               >Quas id adipisci dolore perferendis harum quia porro nam? Voluptatum debitis illo tempore harum!</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
@@ -91,7 +57,7 @@
             </li>
           </ul>
         </card>
-        <router-link to="/ask/my-request">View all</router-link>
+        <router-link to="/questions">View all</router-link>
       </card>
       <card>
         <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
@@ -99,7 +65,7 @@
           <ul slot="raw-content" class="list-group list-group-flush text-left">
             <li class="list-group-item">
               <router-link
-                to="/ask/question/1"
+                to="/questions/1"
               >12 Lorem ipsum dolor sit amet consectetur adipisicing elit.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
@@ -108,7 +74,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/ask/question/1"
+                to="/questions/1"
               >Molestiae pariatur accusamus fuga, officiis in neque iure.</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
@@ -117,7 +83,7 @@
             </li>
             <li class="list-group-item">
               <router-link
-                to="/ask/question/1"
+                to="/questions/1"
               >Quas id adipisci dolore perferendis harum quia porro nam? Voluptatum debitis illo tempore harum!</router-link>
               <footer class="blockquote-footer">
                 Someone famous in
@@ -126,7 +92,7 @@
             </li>
           </ul>
         </card>
-        <router-link to="/ask/my-request">View all</router-link>
+        <router-link to="/questions">View all</router-link>
       </card>
     </div>
   </div>

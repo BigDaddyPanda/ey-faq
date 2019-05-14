@@ -7,7 +7,7 @@ console.log("user", user);
 
 const state = user
     ? { status: { loggedIn: true }, user }
-    : { status: {}, user: null };
+    : { status: {}, user: {} };
 
 const actions = {
     login({ dispatch, commit }, { username, password }) {
@@ -17,7 +17,7 @@ const actions = {
             .then(
                 user => {
                     commit('loginSuccess', user);
-                    router.push('/ask');
+                    router.push('/fa_questions');
                 },
                 error => {
                     commit('loginFailure', error);
@@ -36,7 +36,7 @@ const actions = {
             .then(
                 user => {
                     commit('registerSuccess', user);
-                    router.push('/ask');
+                    router.push('/fa_questions');
                     setTimeout(() => {
                         // display success message after route change completes
                         dispatch('alert/success', 'Registration successful', { root: true });
@@ -59,7 +59,7 @@ const mutations = {
         }
         else {
             state.status = {};
-            state.user = null;
+            state.user = {};
         }
     },
     loginRequest(state, user) {
@@ -73,11 +73,11 @@ const mutations = {
     },
     loginFailure(state) {
         state.status = {};
-        state.user = null;
+        state.user = {};
     },
     logout(state) {
         state.status = {};
-        state.user = null;
+        state.user = {};
     },
     registerRequest(state, user) {
         state.user = user;

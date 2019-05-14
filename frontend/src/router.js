@@ -3,41 +3,41 @@ import Router from "vue-router";
 
 // Horizontal NavBar and Footer
 import MainNavbar from "./layout/MainNavbar.vue";
-import AskNavBar from "./layout/AskNavBar.vue";
 import MainFooter from "./layout/MainFooter.vue";
-import AdminNavBar from "./layout/AdminNavBar.vue";
 
-// Main Layouts
+// Public Realm
 import Index from "./pages/Index.vue";
-import Auth from "./pages/Auth.vue";
-import Ask from "./pages/Ask.vue";
-import Admin from "./pages/Admin.vue";
+import FAQuestions from "./pages/Mentor/FAQuestions.vue";
+import FAPost from "./pages/Mentor/FAPosts.vue";
+import AllQuestions from "./pages/Mentor/AllQuestions.vue";
+import AllPosts from "./pages/Mentor/AllPosts.vue";
+import QuestionPreview from "./pages/Mentor/QuestionPreview.vue";
+import PostPreview from "./pages/Mentor/PostPreview.vue";
 import NotFound from "./pages/NotFound.vue";
 
-
-// Children
-//  Admin
-import EditArticle from "./pages/Admin/EditArticle.vue";
-import ManageArticles from "./pages/Admin/ManageArticles.vue";
-import ManageRequests from "./pages/Admin/ManageRequests.vue";
-import ManageUsers from "./pages/Admin/ManageUsers.vue";
-import ManageRoles from "./pages/Admin/ManageRoles.vue";
-import ManageServices from "./pages/Admin/ManageServices.vue";
-// import ReportABug from "./pages/Admin/ReportABug.vue";
-
-//  Ask
-// import AskIndex from "./pages/Ask/Index.vue";
-import AskQuestion from "./pages/Ask/AskQuestion.vue";
-import MyRequest from "./pages/Ask/MyRequest.vue";
-import Support from "./pages/Ask/Support.vue";
-import QuestionPage from "./pages/Ask/QuestionPage.vue";
-
-//  Auth
+//  Authentification
+import AuthIndex from "./pages/Index.vue";
 import Login from "./pages/Auth/Login.vue";
 import Signup from "./pages/Auth/Signup.vue";
-import EditUser from "./pages/Auth/EditUser.vue";
-import { store } from "./_vuex/_store";
 
+// Admin Realm
+import ManagePosts from "./pages/Admin/ManagePosts.vue";
+import ManageQuestions from "./pages/Admin/ManageQuestions.vue";
+import ManageRoles from "./pages/Admin/ManageRoles.vue";
+import ManageServices from "./pages/Admin/ManageServices.vue";
+import ManageUsers from "./pages/Admin/ManageUsers.vue";
+import GeditPost from "./pages/Admin/GeditPost.vue";
+
+
+// User Realm
+import Profile from "./pages/User/Profile.vue";
+import GeditQuestion from "./pages/User/GeditQuestion.vue";
+import MyQuestions from "./pages/User/MyQuestions.vue";
+
+
+////////////
+
+import store from "./_vuex/_store";
 
 Vue.use(Router);
 
@@ -52,7 +52,44 @@ const router = new Router({
         header: MainNavbar,
         footer: MainFooter
       },
-
+      children: [
+        {
+          path: "fa_question",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "fa_questionx",
+          component: FAQuestions
+        },
+        {
+          path: "fa_post",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "fa_postx",
+          component: FAPost
+        },
+        {
+          path: "questions",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "questions",
+          component: AllQuestions
+        },
+        {
+          path: "questions/:question_id",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "question",
+          component: QuestionPreview
+        },
+        {
+          path: "posts",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "posts",
+          component: AllPosts
+        },
+        {
+          path: "posts/:post_id",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "post",
+          component: PostPreview
+        },
+      ],
       props: {
         header: {
           colorOnScroll: 400
@@ -62,13 +99,14 @@ const router = new Router({
         }
       }
     },
+
     {
       path: "/auth",
       meta: { requiresLogin: false, adminOnly: false },
       name: "auth-index",
       redirect: "/auth/login",
       components: {
-        default: Auth,
+        default: AuthIndex,
         header: MainNavbar,
         footer: MainFooter
       },
@@ -96,106 +134,41 @@ const router = new Router({
         }
       }
     },
+
     {
-      path: "/ask",
-      meta: { requiresLogin: false, adminOnly: false },
+      path: "/user",
+      meta: { requiresLogin: true, adminOnly: false },
+      name: "user_index",
+      redirect: "/fa_question",
       components: {
-        default: Ask,
-        header: AskNavBar,
+        default: null,
+        header: MainNavbar,
         footer: MainFooter
       },
       children: [
         {
-          path: "",
-          meta: { requiresLogin: false, adminOnly: false },
-          name: "ask-index",
-          component: Support
-        },
-        {
-          path: "new-question",
+          path: "profile",
           meta: { requiresLogin: true, adminOnly: false },
-          component: AskQuestion
+          name: "profile",
+          component: Profile
         },
         {
-          path: "my-request",
+          path: "gedit_question",
           meta: { requiresLogin: true, adminOnly: false },
-          component: MyRequest
+          name: "gedit_question",
+          component: GeditQuestion
         },
         {
-          path: "question/:questId",
-          meta: { requiresLogin: false, adminOnly: false },
-          component: QuestionPage
-        },
-        {
-          path: "question",
-          meta: { requiresLogin: false, adminOnly: false },
-          redirect: "new-question"
+          path: "my_questions",
+          meta: { requiresLogin: true, adminOnly: false },
+          name: "my_questions",
+          component: MyQuestions
         },
       ],
       props: {
         header: {
-          colorOnScroll: 400
-        },
-        footer: {
-          backgroundColor: "black"
-        }
-      }
-    },
-    {
-      path: "/admin",
-      meta: { requiresLogin: true, adminOnly: true },
-      components: {
-        default: Admin,
-        header: AdminNavBar,
-        footer: MainFooter
-      },
-      redirect: "/admin/articles",
-      children: [
-        {
-          path: "articles",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "manage-articles",
-          component: ManageArticles
-        },
-        {
-          path: "articles/:article_id",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "edit-articles",
-          component: EditArticle
-        },
-        {
-          path: "requests",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "manage-requests",
-          component: ManageRequests
-        },
-        {
-          path: "roles",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "manage-roles",
-          component: ManageRoles
-        },
-        {
-          path: "services",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "manage-services",
-          component: ManageServices
-        },
-        {
-          path: "users",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "manage-users",
-          component: ManageUsers
-        }, {
-          path: "users/:user_id",
-          meta: { requiresLogin: true, adminOnly: true },
-          name: "admin-index",
-          component: EditUser
-        }
-      ],
-      props: {
-        header: {
-          colorOnScroll: 400
+          colorOnScroll: 400,
+          transparent: false
         },
         footer: {
           backgroundColor: "black"
@@ -204,8 +177,66 @@ const router = new Router({
     },
 
     {
-      path: "*",
+      path: "/admin",
       meta: { requiresLogin: true, adminOnly: true },
+      name: "admin_index",
+      redirect: "/fa_question",
+      components: {
+        default: null,
+        header: MainNavbar,
+        footer: MainFooter
+      },
+      children: [
+        {
+          path: "gedit_post",
+          meta: { requiresLogin: true, adminOnly: true },
+          name: "gedit_post",
+          component: GeditPost
+        },
+        {
+          path: "manage_question",
+          meta: { requiresLogin: true, adminOnly: true },
+          name: "manage_question",
+          component: ManageQuestions
+        },
+        {
+          path: "manage_Post",
+          meta: { requiresLogin: true, adminOnly: true },
+          name: "manage_Post",
+          component: ManagePosts
+        },
+        {
+          path: "manage_user",
+          meta: { requiresLogin: true, adminOnly: true },
+          name: "manage_user",
+          component: ManageUsers
+        },
+        {
+          path: "manage_service",
+          meta: { requiresLogin: true, adminOnly: true },
+          name: "manage_service",
+          component: ManageServices
+        },
+        {
+          path: "manage_role",
+          meta: { requiresLogin: true, adminOnly: true },
+          name: "manage_role",
+          component: ManageRoles
+        }
+      ],
+      props: {
+        header: {
+          colorOnScroll: 400,
+          transparent: true
+        },
+        footer: {
+          backgroundColor: "black"
+        }
+      }
+    },
+    {
+      path: "*",
+      meta: { requiresLogin: false, adminOnly: false },
       component: NotFound
     },
   ],
