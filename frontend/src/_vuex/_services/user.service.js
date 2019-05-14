@@ -29,7 +29,7 @@ function login(username, password) {
         })
     };
 
-    return fetch(`${backend_entry_point}users/authenticate`, requestOptions)
+    return fetch(`${backend_entry_point}loginUser`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a jwt token in the response

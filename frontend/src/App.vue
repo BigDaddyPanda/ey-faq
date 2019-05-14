@@ -1,11 +1,10 @@
 <template>
   <div id="app">
     <router-view name="header"/>
-    <alert :type="alert.type" style="z-index:1040;top:4rem" dismissible>
+    <alert v-if="alert.message" :type="alert.type" style="z-index:1040;top:4rem" dismissible>
       <div class="alert-icon">
         <i class="now-ui-icons ui-2_like"></i>
       </div>
-      Hey
       {{alert.message}}
     </alert>
     <div class="wrapper">

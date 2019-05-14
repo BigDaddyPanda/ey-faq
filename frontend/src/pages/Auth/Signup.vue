@@ -62,7 +62,7 @@
             ></fg-input>
           </template>
           <div class="text-danger text-left">
-            <ul v-html="error_message">{{error_message}}</ul>
+            <ul v-html="az">{{az}}</ul>
           </div>
           <div class="card-footer text-center">
             <n-button type="neutral" @click="submit_form()" round size="lg">Sign-up</n-button>
@@ -87,7 +87,7 @@ export default {
       Password: "",
       C_Password: "",
       Email: "",
-      error_message: ""
+      az: ""
     };
   },
   methods: {
@@ -110,7 +110,7 @@ export default {
     },
     submit_form() {
       this.az = this.errormessage();
-      console.log("submit",this.az);
+      // console.log("submit",this.az);
       
       if (this.az == "") {
         let user = {

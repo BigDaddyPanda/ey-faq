@@ -39,12 +39,12 @@
           </template>
           <template>
             <fg-input
-              v-model="Email"
-              placeholder="Email"
+              v-model="username"
+              placeholder="Username"
               addon-left-icon="now-ui-icons ui-1_email-85"
             ></fg-input>
             <fg-input
-              v-model="Password"
+              v-model="password"
               type="password"
               placeholder="************"
               addon-left-icon="now-ui-icons text_caps-small"
@@ -64,25 +64,27 @@
 </template>
 
 <script>
-import { mapActions , mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
-  computed:{
+  computed: {
     ...mapState(["account"])
   },
   data() {
     return {
-      Password: "",
-      Email: ""
+      password: "",
+      username: ""
     };
   },
   methods: {
     ...mapActions({
       successAlert: "alert/success"
     }),
+    ...mapActions("account", ["login"]),
     login_handler() {
-      console.log(this.Password, this.Email);
-      console.log(this.account)
-      this.successAlert(`${this.account.user.username}`)
+      // console.log(this.password, this.username);
+      // console.log(this.account)
+      // this.successAlert(`${this.account.user.username}`)
+      this.login({ username: this.username, password: this.password });
     }
   }
 };

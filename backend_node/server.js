@@ -1,6 +1,7 @@
 import express from 'express';
 import Cors from 'cors';
 import bodyParser from 'body-parser';
+import bcrypt from 'bcrypt';
 import logger from 'morgan';
 import passport from 'passport';
 const faker = require("faker");
@@ -36,34 +37,47 @@ const genericDataTable = require('./app/api/genericDataTable');
 const uploaderHandler = require('./tools/uploader');
 uploaderHandler(app);
 // eslint-disable-next-line no-console
-
+// bcrypt.hash("azerty123", 12).then(e => console.log("azerty123",e));
+var def_pw_hash="$2b$12$cE2AWwWhdozjhXRHyCHoTeR2INQtuefCRfHjx68NfSGxXKkuOjPyu";
 
 // {force: true} for the hard times
 db.sequelize.sync().then(() => {
-
+// db.sequelize.sync({force: true}).then(() => {
     // populate author table with dummy data
-    // app.listen(8989, () => console.log("App listening on port 8080!"));
     // db.service.bulkCreate(
-    //     times(5, () => ({
-    //         designation: faker.lorem.words(1),
-    //     }))
+    //     [
+    //         { designation: "Resources Humaines" },
+    //         { designation: "Réseau et Sécurité" },
+    //         { designation: "Internet et Techno" }
+    //     ]
     // );
     // db.role.bulkCreate(
-    //     times(5, () => ({
-    //         designation: faker.lorem.words(1),
-    //     }))
+    //     [
+    //         { designation: "admin" },
+    //         { designation: "agent" },
+    //     ]
     // );
-    
-    // db.user.bulkCreate(times(50, () => ({
+
+    // let defaultAdmins = times(3, () => ({
     //     email: faker.internet.email(),
     //     username: faker.internet.userName(),
-    //     password: faker.internet.password(),
+    //     password: def_pw_hash,
     //     first_name: faker.name.firstName(),
     //     last_name: faker.name.lastName(),
-    //     resetPasswordToken: faker.lorem.text(100),
-    //     resetPasswordExpires: faker.lorem.text(100),
+    //     serviceId: 1,
+    //     roleId: 1
+    // }))
+    // defaultAdmins[1].serviceId = 2;
+    // defaultAdmins[2].serviceId = 3;
+    // db.user.bulkCreate(defaultAdmins);
+    // db.user.bulkCreate(times(10, () => ({
+    //     email: faker.internet.email(),
+    //     username: faker.internet.userName(),
+    //     password: def_pw_hash,
+    //     first_name: faker.name.firstName(),
+    //     last_name: faker.name.lastName(),
     //     serviceId: random(1, 3),
-    //     roleId: random(1, 3)
+    //     roleId: 2
     // })))
     require("./app/api/answer")(app, db);
     require("./app/api/attachement")(app, db);

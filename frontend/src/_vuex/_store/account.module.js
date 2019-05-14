@@ -17,7 +17,7 @@ const actions = {
             .then(
                 user => {
                     commit('loginSuccess', user);
-                    router.push('/');
+                    router.push('/ask');
                 },
                 error => {
                     commit('loginFailure', error);
@@ -69,6 +69,7 @@ const mutations = {
     loginSuccess(state, user) {
         state.status = { loggedIn: true };
         state.user = user;
+        localStorage.setItem('user', JSON.stringify(user));
     },
     loginFailure(state) {
         state.status = {};
@@ -79,10 +80,13 @@ const mutations = {
         state.user = null;
     },
     registerRequest(state, user) {
+        state.user = user;
         state.status = { registering: true };
     },
     registerSuccess(state, user) {
-        state.status = {};
+        localStorage.setItem('user', JSON.stringify(user));
+        state.user = user;
+        state.status = { loggedIn: true };
     },
     registerFailure(state, error) {
         state.status = {};

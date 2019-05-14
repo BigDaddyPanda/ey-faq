@@ -49,9 +49,9 @@ module.exports = (app) => {
       if (info !== undefined) {
         console.error(info.message);
         if (info.message === 'bad username') {
-          res.status(401).send(info.message);
+          res.status(401).send({ message: info.message });
         } else {
-          res.status(403).send(info.message);
+          res.status(403).send({ message: info.message });
         }
       } else {
         req.logIn(users, () => {
@@ -59,12 +59,20 @@ module.exports = (app) => {
             where: {
               username: req.body.username,
             },
+            include: [db.role, db.service]
           }).then((user) => {
             const token = jwt.sign({ id: user.id }, jwtSecret.secret);
             res.status(200).send({
               auth: true,
               token,
-              message: 'user found & logged in',
+              user: {
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                username: user.username,
+                service: user.service,
+                role: user.role
+              }
             });
           });
         });
