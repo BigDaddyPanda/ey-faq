@@ -83,7 +83,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch(`${backend_entry_point}users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${backend_entry_point}user/${id}`, requestOptions).then(handleResponse);
 }
 
 function update(user) {

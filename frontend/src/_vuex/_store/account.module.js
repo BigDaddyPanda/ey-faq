@@ -3,6 +3,8 @@ import router from '../../router';
 // import { router } from '../_helpers';
 // router
 const user = JSON.parse(localStorage.getItem('user'));
+console.log("user", user);
+
 const state = user
     ? { status: { loggedIn: true }, user }
     : { status: {}, user: null };
@@ -10,7 +12,7 @@ const state = user
 const actions = {
     login({ dispatch, commit }, { username, password }) {
         commit('loginRequest', { username });
-    
+
         userService.login(username, password)
             .then(
                 user => {
@@ -29,7 +31,7 @@ const actions = {
     },
     register({ dispatch, commit }, user) {
         commit('registerRequest', user);
-    
+
         userService.register(user)
             .then(
                 user => {
@@ -49,6 +51,17 @@ const actions = {
 };
 
 const mutations = {
+    assertLogin(state) {
+        const saved_user = JSON.parse(localStorage.getItem('user'));
+        if (saved_user) {
+            state.user = saved_user;
+            status = { loggedIn: true }
+        }
+        else {
+            state.status = {};
+            state.user = null;
+        }
+    },
     loginRequest(state, user) {
         state.status = { loggingIn: true };
         state.user = user;

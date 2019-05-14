@@ -5,6 +5,7 @@ const state = {
 
 const actions = {
     success({ commit }, message) {
+        console.log('success', message);
         commit('success', message);
     },
     error({ commit }, message) {
@@ -17,11 +18,11 @@ const actions = {
 
 const mutations = {
     success(state, message) {
-        state.type = 'alert-success';
+        state.type = 'success';
         state.message = message;
     },
     error(state, message) {
-        state.type = 'alert-danger';
+        state.type = 'danger';
         state.message = message;
     },
     clear(state) {

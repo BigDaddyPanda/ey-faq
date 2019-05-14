@@ -64,7 +64,11 @@
 </template>
 
 <script>
+import { mapActions , mapState} from "vuex";
 export default {
+  computed:{
+    ...mapState(["account"])
+  },
   data() {
     return {
       Password: "",
@@ -72,8 +76,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      successAlert: "alert/success"
+    }),
     login_handler() {
       console.log(this.Password, this.Email);
+      console.log(this.account)
+      this.successAlert(`${this.account.user.username}`)
     }
   }
 };
