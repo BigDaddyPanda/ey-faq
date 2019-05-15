@@ -60,7 +60,12 @@ module.exports = (sequelize, type) => {
         user.hasMany(models.attachement);
         //the post reaction association
         user.belongsToMany(models.post, {
-            through: models.user_post
+            unique: false,
+            through: { model: models.user_post, unique: false }, constraints: false, allowNull: true, defaultValue: null
+        });
+        user.belongsToMany(models.question, {
+            unique: false,
+            through: { model: models.user_question, unique: false }, constraints: false, allowNull: true, defaultValue: null
         });
     };
     const sequelizePaginate = require('sequelize-paginate');

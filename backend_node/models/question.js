@@ -14,15 +14,17 @@ module.exports = (sequelize, DataTypes) => {
   question.associate = function (models) {
     // associations can be defined here
     question.hasMany(models.answer, {
-      as: 'answers'
+      as: 'answers', constraints: false, allowNull: true, defaultValue: null
     })
     question.hasMany(models.attachement, {
-      as: 'attachements'
-    }) 
+      as: 'attachements', constraints: false, allowNull: true, defaultValue: null
+    })
+    question.hasOne(models.service, { constraints: false, allowNull: true, defaultValue: null })
 
     // https://sequelize.readthedocs.io/en/v3/api/associations/belongs-to-many/
     question.belongsToMany(models.user, {
-      through: models.user_question
+      unique: false,
+      through:{ model:models.user_question, unique: false }, constraints: false, allowNull: true, defaultValue: null
     });
   };
   const sequelizePaginate = require('sequelize-paginate');

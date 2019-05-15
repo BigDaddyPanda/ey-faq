@@ -38,12 +38,12 @@ const uploaderHandler = require('./tools/uploader');
 uploaderHandler(app);
 // eslint-disable-next-line no-console
 // bcrypt.hash("azerty123", 12).then(e => console.log("azerty123",e));
-var def_pw_hash="$2b$12$cE2AWwWhdozjhXRHyCHoTeR2INQtuefCRfHjx68NfSGxXKkuOjPyu";
+var def_pw_hash = "$2b$12$cE2AWwWhdozjhXRHyCHoTeR2INQtuefCRfHjx68NfSGxXKkuOjPyu";
 
 // {force: true} for the hard times
 db.sequelize.sync().then(() => {
-// db.sequelize.sync({force: true}).then(() => {
-    // // populate author table with dummy data
+// db.sequelize.sync({ force: true }).then(() => {
+    // // // populate author table with dummy data
     // db.service.bulkCreate(
     //     [
     //         { designation: "General Information" },
@@ -80,6 +80,36 @@ db.sequelize.sync().then(() => {
     //     serviceId: random(1, 3),
     //     roleId: 2
     // })))
+    // db.post.bulkCreate(times(10, () => ({
+    //     title: faker.lorem.sentence(),
+    //     description: faker.lorem.sentence(),
+    //     content: faker.lorem.text(),
+    //     serviceId: random(1, 4)
+    // })))
+    // db.question.bulkCreate(times(10, () => ({
+    //     title: faker.lorem.sentence(),
+    //     description: faker.lorem.sentence(),
+    //     content: faker.lorem.text(),
+    //     serviceId: random(1, 4)
+    // })))
+
+    db.user.findAll().then(function (users) {
+        users.forEach(usr => {
+            db.question.findByPk((usr.id+1)%10).then(function (qst) {
+                // usr.setQuestions([qst]);
+                // Fuck this sequelize can't have multiple entries with the same fk,fk
+                // usr.addQuestion(qst, { through: { participation: 'answerz' } });
+                db.user_question.create({
+                    questionId:qst.id,
+                    userId:usr.id,
+                    participation:'asker'
+                })
+            })
+        });
+    });
+
+
+
     require("./app/api/answer")(app, db);
     require("./app/api/attachement")(app, db);
     require("./app/api/comment")(app, db);

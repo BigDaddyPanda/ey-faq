@@ -7,6 +7,7 @@ import MainFooter from "./layout/MainFooter.vue";
 
 // Public Realm
 import Index from "./pages/Index.vue";
+import Driver from "./pages/Driver.vue";
 import FAQuestions from "./pages/Mentor/FAQuestions.vue";
 import FAPost from "./pages/Mentor/FAPosts.vue";
 import AllQuestions from "./pages/Mentor/AllQuestions.vue";
@@ -47,12 +48,19 @@ const router = new Router({
       path: "/",
       meta: { requiresLogin: false, adminOnly: false },
       name: "index",
+      redirect: "/index",
       components: {
         default: Index,
         header: MainNavbar,
         footer: MainFooter
       },
       children: [
+        {
+          path: "index",
+          meta: { requiresLogin: false, adminOnly: false },
+          name: "driver",
+          component: Driver
+        },
         {
           path: "fa_question",
           meta: { requiresLogin: false, adminOnly: false },
@@ -182,7 +190,7 @@ const router = new Router({
       name: "admin_index",
       redirect: "/fa_question",
       components: {
-        default: null,
+        default: AllPosts,
         header: MainNavbar,
         footer: MainFooter
       },
@@ -200,9 +208,9 @@ const router = new Router({
           component: ManageQuestions
         },
         {
-          path: "manage_Post",
+          path: "manage_post",
           meta: { requiresLogin: true, adminOnly: true },
-          name: "manage_Post",
+          name: "manage_post",
           component: ManagePosts
         },
         {

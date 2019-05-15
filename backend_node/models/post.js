@@ -13,11 +13,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   post.associate = function (models) {
     // associations can be defined here
-    post.hasMany(models.comment, {as: 'comments'})
-    post.hasMany(models.attachement, {as: 'attachements'})
+    post.hasMany(models.comment, { as: 'comments' })
+    post.hasMany(models.attachement, { as: 'attachements' })
+    post.hasOne(models.service)
     // https://sequelize.readthedocs.io/en/v3/api/associations/belongs-to-many/
     post.belongsToMany(models.user, {
-      through: models.user_post
+
+      through: { model: models.user_post, unique: false }, constraints: false
     });
   };
   const sequelizePaginate = require('sequelize-paginate');

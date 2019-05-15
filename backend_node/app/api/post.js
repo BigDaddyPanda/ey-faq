@@ -2,7 +2,12 @@ const emailer = require("../../tools/email");
 
 module.exports = (app, db) => {
   app.get("/posts", (req, res) =>
-    db.post.findAll().then((result) => res.json(result))
+    db.post.findAll({
+      include: [{
+        model: db.service,
+        attributes: ["designation"]
+      }]
+    }).then((result) => res.json(result))
   );
 
   app.get("/post/:id", (req, res) =>
@@ -25,15 +30,15 @@ module.exports = (app, db) => {
        */
       content: req.body.content
     }, {
-      where: {
-        id: req.params.id
-      }
-    }).then((result) => {
-      let to = db.user.findByPk(result.userId),
-      text = `${req.body.username} has edited your post!`
-      emailer(to,text)
-      res.json(result)
-    })
+        where: {
+          id: req.params.id
+        }
+      }).then((result) => {
+        let to = db.user.findByPk(result.userId),
+          text = `${req.body.username} has edited your post!`
+        emailer(to, text)
+        res.json(result)
+      })
   );
 
   app.delete("/post/:id", (req, res) =>

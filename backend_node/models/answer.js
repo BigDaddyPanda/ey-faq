@@ -13,7 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     // reaction join
     answer.belongsToMany(models.user, {
-      through: models.user_answer
+
+      through: { model: models.user_answer, unique: false }, constraints: false, allowNull: true, defaultValue: null
     });
   };
   const sequelizePaginate = require('sequelize-paginate');
