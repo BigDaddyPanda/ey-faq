@@ -7,15 +7,18 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     content: DataTypes.TEXT,
-    edited: DataTypes.BOOLEAN
+    edited: DataTypes.BOOLEAN,
+    editedBy: DataTypes.STRING,
   }, {});
   answer.associate = function (models) {
     // associations can be defined here
     // reaction join
-    answer.belongsToMany(models.user, {
+    answer.belongsTo(models.user,{ constraints: false, allowNull: true, defaultValue: null })
+    answer.belongsTo(models.question,{ constraints: false, allowNull: true, defaultValue: null })
+    // answer.belongsToMany(models.user, {
 
-      through: { model: models.user_answer, unique: false }, constraints: false, allowNull: true, defaultValue: null
-    });
+    //   through: { model: models.user_answer, unique: false }, constraints: false, allowNull: true, defaultValue: null
+    // });
   };
   const sequelizePaginate = require('sequelize-paginate');
   sequelizePaginate.paginate(answer)

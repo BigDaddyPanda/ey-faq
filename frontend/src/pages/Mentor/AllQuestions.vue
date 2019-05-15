@@ -53,14 +53,6 @@ import { apiRes } from "@/utils";
 // import router from "@/router";
 
 export default {
-  mounted() {
-    axios.get(apiRes("roles", "")).then(resp => {
-      this.roles = resp.data.reduce((q, p) => {
-        q.push(p.designation);
-        return q;
-      }, []);
-    });
-  },
   data() {
     return {
       roles: [],

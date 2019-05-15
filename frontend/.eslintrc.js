@@ -6,7 +6,6 @@ module.exports = {
   ],
   rules: {
     // override/add rules settings here, such as:
-    // 'vue/no-unused-vars': 'error'
     'vue/mustache-interpolation-spacing': 'off',
     'vue/html-indent': 'off',
     'vue/html-self-closing': 'off',
@@ -14,6 +13,7 @@ module.exports = {
     "vue/order-in-components": "off",
     'vue/attributes-order': 'off',
     'vue/max-attributes-per-line': 'off',
+    'vue/no-unused-vars': 'off',
     'vue/v-on-style': 'off'
   }
 }

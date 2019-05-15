@@ -55,18 +55,23 @@ module.exports = (sequelize, type) => {
     });
     user.associate = function (models) {
         // associations can be defined here
-        user.belongsTo(models.service);
-        user.belongsTo(models.role);
-        user.hasMany(models.attachement);
+        user.belongsTo(models.service,{ constraints: false, allowNull: true, defaultValue: null });
+        user.belongsTo(models.role,{ constraints: false, allowNull: true, defaultValue: null });
+        // user.hasMany(models.attachement);
         //the post reaction association
-        user.belongsToMany(models.post, {
-            unique: false,
-            through: { model: models.user_post, unique: false }, constraints: false, allowNull: true, defaultValue: null
-        });
-        user.belongsToMany(models.question, {
-            unique: false,
-            through: { model: models.user_question, unique: false }, constraints: false, allowNull: true, defaultValue: null
-        });
+        user.hasMany(models.post,{ constraints: false, allowNull: true, defaultValue: null });
+        user.hasMany(models.answer,{ constraints: false, allowNull: true, defaultValue: null });
+        
+        user.hasMany(models.answer,{ constraints: false, allowNull: true, defaultValue: null });
+        user.hasMany(models.comment,{ constraints: false, allowNull: true, defaultValue: null });
+        // user.belongsToMany(models.post, {
+        //     unique: false,
+        //     through: { model: models.user_post, unique: false }, constraints: false, allowNull: true, defaultValue: null
+        // });
+        // user.belongsToMany(models.question, {
+        //     unique: false,
+        //     through: { model: models.user_question, unique: false }, constraints: false, allowNull: true, defaultValue: null
+        // });
     };
     const sequelizePaginate = require('sequelize-paginate');
     sequelizePaginate.paginate(user)

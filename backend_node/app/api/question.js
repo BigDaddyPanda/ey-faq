@@ -2,11 +2,11 @@ const emailer = require("../../tools/email");
 
 module.exports = (app, db) => {
   app.get("/questions", (req, res) =>
-    db.question.findAll({ include: [db.user, db.service] }).then((result) => res.json(result))
+    db.question.findAll({ include: [{ all: true }] }).then((result) => res.json(result))
   );
 
   app.get("/question/:id", (req, res) =>
-    db.question.findByPk(req.params.id).then((result) => res.json(result))
+    db.question.findByPk(req.params.id,{ include: [{ all: true }] }).then((result) => res.json(result))
   );
 
   app.post("/question", (req, res) =>
@@ -18,7 +18,7 @@ module.exports = (app, db) => {
     })
   );
 
-  app.put("/question/:id", (req, res) =>
+  app.put("/question/:id", (req, res) => {
     db.question.update({
       /**
        * Other stuff to update
@@ -34,6 +34,7 @@ module.exports = (app, db) => {
         emailer(to, text)
         res.json(result)
       })
+  }
   );
 
   app.delete("/question/:id", (req, res) =>
