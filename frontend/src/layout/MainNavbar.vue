@@ -9,23 +9,26 @@
     >-->
     <!-- <template slot-scope="{ toggle, isToggled }"> -->
     <template>
-      <router-link v-popover:popover1 class="navbar-brand" to="/">EY Mentor</router-link>
+      <router-link v-popover:popover1 class="breadcrumb-item navbar-brand" to="/">EY Mentor</router-link>
+      <router-link v-popover:popover1 class="breadcrumb-item" to="/fa_question">Top Questions</router-link>
+      <router-link v-popover:popover1 class="breadcrumb-item" to="/fa_post">Top Articles</router-link>
     </template>
     <template slot="navbar-menu">
       <!-- <li class="nav-item"></li> -->
       <!-- <li class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/fa_questions/">
+        <router-link v-popover:popover1 class="nav-link" to="/fa_question/">
           <i class="now-ui-icons travel_info"></i>
           <p>Support</p>
         </router-link>
       </li>
 
-      <li class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/fa_questions/">
-          <i class="now-ui-icons arrows-1_cloud-download-93"></i>
-          <p>Download</p>
+      -->
+      <li v-if="account.user" class="nav-item">
+        <router-link v-popover:popover1 class="nav-link" to="/fa_question/">
+          <i class="now-ui-icons travel_info"></i>
+          <p>Ask A question</p>
         </router-link>
-      </li> -->
+      </li>
       <li class="nav-item">
         <a
           class="nav-link"
@@ -73,6 +76,7 @@
 /* eslint-disable */
 import { DropDown, NavbarToggleButton, Navbar, NavLink } from "@/components";
 import { Popover } from "element-ui";
+import { mapState } from "vuex";
 export default {
   name: "main-navbar",
   props: {
@@ -85,6 +89,9 @@ export default {
     NavbarToggleButton,
     NavLink,
     [Popover.name]: Popover
+  },
+  computed: {
+    ...mapState(["account"])
   }
 };
 </script>

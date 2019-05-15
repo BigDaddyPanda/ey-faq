@@ -9,17 +9,17 @@
             v-model="filterText"
             class="three wide column"
             @keyup.enter="doFilter"
-            placeholder="name, nickname, or designation"
+            placeholder="Title"
           >
           <button class="ui primary button" @click="doFilter">Go</button>
           <button class="ui button" @click="resetFilter">Reset</button>
         </div>
       </div>
-      <button class="ui button ml-auto" @click="add_new_modal">Add New Service</button>
+      <button class="ui button ml-auto" @click="add_new_modal">Add New Question</button>
     </div>
     <vuetable
       ref="vuetable"
-      api-url="http://127.0.0.1:5000/api/service?attributes=id,designation"
+      api-url="http://127.0.0.1:5000/api/question?attributes=id,title,description"
       :fields="fields"
       :append-params="moreParams"
       :multi-sort="true"
@@ -29,10 +29,10 @@
     >
       <template slot="questionlink" scope="props">
         <li class="list-group-item">
-          <router-link to="/questions/1">12 Lorem ipsum dolor sit amet consectetur adipisicing elit.</router-link>
+          <router-link :to="`/questions/${props.rowData.id}`">{{props.rowData.title}}</router-link>
           <footer class="blockquote-footer">
-            Someone famous in
-            <cite title="Source Title">Source Title</cite>
+            Overview:
+            <cite title="Source Title">{{props.rowData.description}}</cite>
           </footer>
         </li>
       </template>
@@ -41,6 +41,15 @@
       <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
       <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
     </div>
+    <modal :show.sync="dele_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up text-danger">Delete Service</h4>
+      <h3 class="text-danger">Warning!</h3>
+      <h4>You are about to delete a whole Service! Every related user, post, question will be set to Default ones!</h4>
+      <template slot="footer">
+        <n-button type="danger" simple @click.native="hide_modal()">Close</n-button>
+        <n-button type="danger" @click="submit_action('delete')">I know what I am doing</n-button>
+      </template>
+    </modal>
   </div>
 </template>
 
@@ -66,7 +75,7 @@ export default {
       moreParams: {},
       sortOrder: [
         {
-          field: "designation",
+          field: "title",
           direction: "des"
         }
       ],
@@ -75,7 +84,8 @@ export default {
           name: "__slot:questionlink",
           title: "Questions",
           titleClass: "center aligned",
-          dataClass: "text-left aligned"
+          dataClass: "text-left aligned",
+          props: ["id"]
         }
       ]
     };

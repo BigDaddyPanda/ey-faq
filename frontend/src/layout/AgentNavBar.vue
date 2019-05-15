@@ -10,10 +10,10 @@
     <!-- <template slot-scope="{ toggle, isToggled }"> -->
     <!-- <template>
     </template>-->
-    <router-link v-popover:popover1 class="navbar-brand" to="/fa_questions">{{ connected_user }}</router-link>
+    <router-link v-popover:popover1 class="navbar-brand" to="/fa_question">{{ connected_user }}</router-link>
     <template slot="navbar-menu">
       <li class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/fa_questions/">
+        <router-link v-popover:popover1 class="nav-link" to="/fa_question/">
           <i class="now-ui-icons travel_info"></i>
           <p>F.A.Q</p>
         </router-link>
@@ -25,7 +25,7 @@
         </router-link>
       </li>
       <li class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/fa_questions/new-question">
+        <router-link v-popover:popover1 class="nav-link" to="/fa_question/new-question">
           <i class="now-ui-icons ui-1_send"></i>
           <p>Submit a Request</p>
         </router-link>
@@ -43,9 +43,9 @@
         class="nav-item"
         :title="user_info.username"
       >
-        <router-link class="dropdown-item" to="/fa_questions">Account</router-link>
-        <router-link class="dropdown-item" to="/fa_questions">Report a Bug</router-link>
-        <router-link class="dropdown-item" to="/fa_questions">Logout</router-link>
+        <router-link class="dropdown-item" to="/fa_question">Account</router-link>
+        <router-link class="dropdown-item" to="/fa_question">Report a Bug</router-link>
+        <router-link class="dropdown-item" to="/fa_question">Logout</router-link>
       </drop-down>
     </template>
   </navbar>

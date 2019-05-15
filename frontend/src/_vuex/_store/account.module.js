@@ -17,7 +17,7 @@ const actions = {
             .then(
                 user => {
                     commit('loginSuccess', user);
-                    router.push('/fa_questions');
+                    router.push('/fa_question');
                 },
                 error => {
                     commit('loginFailure', error);
@@ -36,7 +36,7 @@ const actions = {
             .then(
                 user => {
                     commit('registerSuccess', user);
-                    router.push('/fa_questions');
+                    router.push('/fa_question');
                     setTimeout(() => {
                         // display success message after route change completes
                         dispatch('alert/success', 'Registration successful', { root: true });

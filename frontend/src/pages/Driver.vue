@@ -15,7 +15,7 @@
               role="button"
             >Join the EY Community</router-link>
             <router-link
-              to="/fa_questions"
+              to="/fa_question"
               class="btn btn-secondary btn-lg btn-round"
               role="button"
             >Dive through the FAQ</router-link>

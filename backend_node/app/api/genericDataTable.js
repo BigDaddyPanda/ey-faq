@@ -26,7 +26,7 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
                         options[key] = [element.split(',')];
                         break;
                     case 'sort':
-                        options['order'] = [element.split('|').map(e => asds(e))];
+                        options['order'] = [element.split(/[|,]/).map(e => asds(e))];
                         break;
                     case 'page':
                         options[key] = Number(element);
@@ -50,9 +50,27 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
                 pages,
                 total
             } = q;
-            if (options.filter) {
-                docs = docs.filter(e => (e.designation.indexOf(options.filter) > -1))
-            }
+            // assuming we will ask for "id","title" 
+            if (options.attributes.length>1 && options.filter && options.filter!='')
+                docs = docs.filter(e => (e[options.attributes[1]].indexOf(options.filter) > -1));
+            // let fin_doc = [], vis_id = [];
+            // if (options.filter && options.filter != '') {
+            //     options.attributes.forEach(att => {
+            //         if (!["number", "boolean"].includes(typeof (att))) {
+            //             var x = docs.filter(e => (e[att].indexOf(options.filter) > -1));
+            //             x.forEach(d => {
+            //                 if (vis_id.indexOf(d.id) == -1) {
+            //                     vis_id.push(d.id);
+            //                     fin_doc.push(d);
+            //                 }
+            //             })
+            //         }
+
+            //     });
+            // }
+            // else {
+            //     fin_doc = docs;
+            // }
             // // console.log(q.page);
 
             let data_resp = {
@@ -60,8 +78,8 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
                 "per_page": options.paginate,
                 "current_page": options.page,
                 "last_page": pages,
-                "next_page_url": options.page == pages ? null : req.protocol + '://' + req.get('host') + `/${path}?sort=${options.order[0].join(',')}&filter=d&per_page=${options.paginate}&page=${options.page+1}`,
-                "prev_page_url": options.page == 1 ? null : req.protocol + '://' + req.get('host') + `/${path}?sort=${options.order[0].join(',')}&filter=d&per_page=${options.paginate}&page=${options.page-1}`,
+                "next_page_url": options.page == pages ? null : req.protocol + '://' + req.get('host') + `/${path}?sort=${options.order[0].join(',')}&filter=d&per_page=${options.paginate}&page=${options.page + 1}`,
+                "prev_page_url": options.page == 1 ? null : req.protocol + '://' + req.get('host') + `/${path}?sort=${options.order[0].join(',')}&filter=d&per_page=${options.paginate}&page=${options.page - 1}`,
                 "from": options.paginate * (options.page - 1) + 1,
                 "to": options.page * options.paginate,
                 "data": docs
