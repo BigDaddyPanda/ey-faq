@@ -12,7 +12,7 @@ module.exports = (to, text) => {
     var mailOptions = {
         from: 'eymentor.eymentor@gmail.com',
         to,
-        subject: 'Sending Email using Node.js',
+        subject: 'EY Mentor Updates!',
         text
     };
     transporter.sendMail(mailOptions, function (error, info) {

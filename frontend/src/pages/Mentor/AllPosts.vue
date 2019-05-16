@@ -15,11 +15,11 @@
           <button class="ui button" @click="resetFilter">Reset</button>
         </div>
       </div>
-      <button class="ui button ml-auto" @click="add_new_modal">Add New Question</button>
+      <button class="ui button ml-auto" @click="add_new_modal">Add New Post</button>
     </div>
     <vuetable
       ref="vuetable"
-      api-url="http://127.0.0.1:5000/api/question?attributes=id,title,description"
+      api-url="http://127.0.0.1:5000/api/post?attributes=id,title,description"
       :fields="fields"
       :append-params="moreParams"
       :multi-sort="true"
@@ -27,9 +27,9 @@
       @vuetable:pagination-data="onPaginationData"
       :sort-order="sortOrder"
     >
-      <template slot="questionlink" scope="props">
+      <template slot="postlink" scope="props">
         <li class="list-group-item">
-          <router-link :to="`/questions/${props.rowData.id}`">{{props.rowData.title}}</router-link>
+          <router-link :to="`/posts/${props.rowData.id}`">{{props.rowData.title}}</router-link>
           <footer class="blockquote-footer">
             Overview:
             <cite title="Source Title">{{props.rowData.description}}</cite>
@@ -44,7 +44,7 @@
     <modal :show.sync="dele_modal" headerClasses="justify-content-center">
       <h4 slot="header" class="title title-up text-danger">Delete Service</h4>
       <h3 class="text-danger">Warning!</h3>
-      <h4>You are about to delete a whole Service! Every related user, post, question will be set to Default ones!</h4>
+      <h4>You are about to delete a whole Service! Every related user, post, post will be set to Default ones!</h4>
       <template slot="footer">
         <n-button type="danger" simple @click.native="hide_modal()">Close</n-button>
         <n-button type="danger" @click="submit_action('delete')">I know what I am doing</n-button>
@@ -81,8 +81,8 @@ export default {
       ],
       fields: [
         {
-          name: "__slot:questionlink",
-          title: "Questions",
+          name: "__slot:postlink",
+          title: "Posts",
           titleClass: "center aligned",
           dataClass: "text-left aligned",
           props: ["id"]

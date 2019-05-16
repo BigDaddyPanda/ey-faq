@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     link: DataTypes.STRING
   }, {});
   attachement.associate = function (models) {
+    attachement.belongsTo(models.question, { constraints: false, allowNull: true, defaultValue: null });
     // associations can be defined here
   };
   const sequelizePaginate = require('sequelize-paginate');

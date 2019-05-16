@@ -9,9 +9,9 @@
     >-->
     <!-- <template slot-scope="{ toggle, isToggled }"> -->
     <template>
-      <router-link v-popover:popover1 class="breadcrumb-item navbar-brand" to="/">EY Mentor</router-link>
-      <router-link v-popover:popover1 class="breadcrumb-item" to="/fa_question">Top Questions</router-link>
-      <router-link v-popover:popover1 class="breadcrumb-item" to="/fa_post">Top Articles</router-link>
+      <router-link v-popover:popover1 class="navbar-brand" to="/">{{helloworld}}</router-link>
+      <router-link v-popover:popover1 class="badge" to="/fa_question">Top Questions</router-link>
+      <router-link v-popover:popover1 class="badge" to="/fa_post">Top Articles</router-link>
     </template>
     <template slot="navbar-menu">
       <!-- <li class="nav-item"></li> -->
@@ -24,10 +24,35 @@
 
       -->
       <li v-if="account.user" class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/fa_question/">
+        <router-link v-popover:popover1 class="nav-link" to="/user/edit_question">
           <i class="now-ui-icons travel_info"></i>
           <p>Ask A question</p>
         </router-link>
+      </li>
+      <li v-if="iamadmin">
+        <router-link v-popover:popover1 class="nav-link" to="/admin/edit_post">
+          <i class="now-ui-icons travel_info"></i>
+          <p>Publish A Post</p>
+        </router-link>
+      </li>
+      <li v-if="iamadmin">
+        <drop-down tag="li" class="nav-item" title="Management">
+          <router-link class="text-primary nav-link" to="/admin/manage_user">
+            <p>Manage Users</p>
+          </router-link>
+          <router-link class="text-primary nav-link" to="/admin/manage_post">
+            <p>Manage Posts</p>
+          </router-link>
+          <router-link class="text-primary nav-link" to="/admin/manage_question">
+            <p>Manage Questions</p>
+          </router-link>
+          <router-link class="text-primary nav-link" to="/admin/manage_service">
+            <p>Manage Services</p>
+          </router-link>
+          <router-link class="text-primary nav-link" to="/admin/manage_role">
+            <p>Manage Roles</p>
+          </router-link>
+        </drop-down>
       </li>
       <li class="nav-item">
         <a
@@ -91,7 +116,21 @@ export default {
     [Popover.name]: Popover
   },
   computed: {
-    ...mapState(["account"])
+    ...mapState(["account"]),
+    iamadmin: function() {
+      if (this.account.user && this.account.user.user)
+        return this.account.user.user.role.designation == "admin";
+      return false;
+    },
+    helloworld: function() {
+      if (this.account.user.user) {
+        let user = this.account.user.user;
+        // if (user.first_name) return "Hello " + user.first_name;
+        // if (user.last_name) return "Hello " + user.last_name;
+        // if (user.username) return "Hello " + user.username;
+        return "Hello " + user.first_name || user.last_name || user.username;
+      } else return "Welcome to EY mentor";
+    }
   }
 };
 </script>

@@ -15,13 +15,12 @@
 </template>
 
 <script>
+import _ from "lodash"
 export default {
   
   computed:{
     header_title(){
-      console.log(this.$route.params);
-      
-      return this.$route.params.questID|| "Ask your Questions"
+      return _.startCase(this.$route.path.split('/').pop())
     }
   }
 };

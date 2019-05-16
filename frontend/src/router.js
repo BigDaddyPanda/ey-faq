@@ -31,6 +31,7 @@ import GeditPost from "./pages/Admin/GeditPost.vue";
 
 
 // User Realm
+import Ask from "./pages/Ask.vue";
 import Profile from "./pages/User/Profile.vue";
 import GeditQuestion from "./pages/User/GeditQuestion.vue";
 import MyQuestions from "./pages/User/MyQuestions.vue";
@@ -149,7 +150,7 @@ const router = new Router({
       name: "user_index",
       redirect: "/fa_question",
       components: {
-        default: null,
+        default: Ask,
         header: MainNavbar,
         footer: MainFooter
       },
@@ -161,9 +162,9 @@ const router = new Router({
           component: Profile
         },
         {
-          path: "gedit_question",
+          path: "edit_question",
           meta: { requiresLogin: true, adminOnly: false },
-          name: "gedit_question",
+          name: "edit_question",
           component: GeditQuestion
         },
         {
@@ -190,15 +191,15 @@ const router = new Router({
       name: "admin_index",
       redirect: "/fa_question",
       components: {
-        default: AllPosts,
+        default: Ask,
         header: MainNavbar,
         footer: MainFooter
       },
       children: [
         {
-          path: "gedit_post",
+          path: "edit_post",
           meta: { requiresLogin: true, adminOnly: true },
-          name: "gedit_post",
+          name: "edit_post",
           component: GeditPost
         },
         {

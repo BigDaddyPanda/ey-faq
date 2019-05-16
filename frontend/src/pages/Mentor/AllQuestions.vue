@@ -19,7 +19,7 @@
     </div>
     <vuetable
       ref="vuetable"
-      api-url="http://127.0.0.1:5000/api/question?attributes=id,title,description"
+      :api-url="get_init_url"
       :fields="fields"
       :append-params="moreParams"
       :multi-sort="true"
@@ -62,6 +62,17 @@ import { apiRes } from "@/utils";
 // import router from "@/router";
 
 export default {
+  computed: {
+    get_init_url() {
+      if (this.$route.query.service_id) {
+        return (
+          "http://127.0.0.1:5000/api/question?attributes=id,title,description&service_id=" +
+          this.$route.query.service_id
+        );
+      }
+      return "http://127.0.0.1:5000/api/question?attributes=id,title,description";
+    }
+  },
   data() {
     return {
       roles: [],

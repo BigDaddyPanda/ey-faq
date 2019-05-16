@@ -9,7 +9,7 @@
             v-model="filterText"
             class="three wide column"
             @keyup.enter="doFilter"
-            placeholder="name, nickname, or designation"
+            placeholder="designation..."
           >
           <button class="ui primary button" @click="doFilter">Go</button>
           <button class="ui button" @click="resetFilter">Reset</button>
@@ -249,17 +249,6 @@ export default {
       this.edit_modal = false;
       this.view_modal = false;
       this.dele_modal = false;
-    },
-    genderLabel(value) {
-      return value === "M"
-        ? '<span class="badge bg-primary"><i class="large man icon"></i>Male</span>'
-        : '<span class="badge bg-primary"><i class="large woman icon"></i>Female</span>';
-    },
-    formatNumber(value) {
-      return accounting.formatNumber(value, 2);
-    },
-    formatDate(value, fmt = "D MMM YYYY") {
-      return value == null ? "" : moment(value, "YYYY-MM-DD").format(fmt);
     },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);

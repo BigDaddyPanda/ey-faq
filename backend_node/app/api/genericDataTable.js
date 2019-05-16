@@ -51,8 +51,16 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
                 total
             } = q;
             // assuming we will ask for "id","title" 
-            if (options.attributes.length>1 && options.filter && options.filter!='')
+            if (options.attributes.length > 1 && options.filter && options.filter != '')
                 docs = docs.filter(e => (e[options.attributes[1]].indexOf(options.filter) > -1));
+            if (options.service_id)
+                docs = docs.filter(e => (e.dataValues.id == options.service_id));
+            // console.log(
+            //     // e.serviceId,options.service_id,
+            //     docs.map(e => ([e.dataValues.id,e.serviceId,options.service_id] ))
+            // );
+            // console.log(options.service_id == 2);
+
             // let fin_doc = [], vis_id = [];
             // if (options.filter && options.filter != '') {
             //     options.attributes.forEach(att => {
@@ -75,7 +83,7 @@ module.exports = (app, dbModel, path) => app.get(`/${path}/`, function (req, res
 
             let data_resp = {
                 "total": total,
-                "per_page": options.paginate,
+                "per_page": Math.min(total, options.paginate),
                 "current_page": options.page,
                 "last_page": pages,
                 "next_page_url": options.page == pages ? null : req.protocol + '://' + req.get('host') + `/${path}?sort=${options.order[0].join(',')}&filter=d&per_page=${options.paginate}&page=${options.page + 1}`,

@@ -5,7 +5,7 @@ module.exports = (app, db) => {
     db.question.findAll({ include: [{ all: true }] }).then((result) => res.json(result))
   );
   app.get("/faquestions", (req, res) =>
-    db.question.findAll({ include: [{ all: true }] }).then((result) => res.json(result.slice(0,5)))
+    db.question.findAll({ include: [{ all: true }, { model: db.answer, include: [{ all: true }] }] }).then((result) => res.json(result.slice(0, 5)))
     // db.question.findAll({
     //   include: [{ all: true }],
     //   // attributes: [[sequelize.fn('COUNT', 'answer.id'), 'count_answers']],
@@ -37,25 +37,36 @@ module.exports = (app, db) => {
       /**
        * Other stuff to update
        */
-      content: req.body.content
+      tag: req.body.newTag,
+      serviceId: req.body.newService,
+      editor: req.body.editor.username
     }, {
         where: {
           id: req.params.id
         }
       }).then((result) => {
-        let to = db.user.findByPk(result.userId),
-          text = `${req.body.username} has edited your question!`
-        emailer(to, text)
+        let to = req.body.editor.email;
+        let modificationtext = req.body.modificationtext,
+          text = `${req.body.username} has edited your question!\nHe claims that:\n${modificationtext}`
+        emailer(to, text);
         res.json(result)
       })
   }
   );
 
-  app.delete("/question/:id", (req, res) =>
+  // app.delete
+  app.put("/delquestion/:id", (req, res) => {
+    console.log(req.params);
+    console.log(req.body.deletereason);
+    let to = "ky94@live.com";
+    // let to = req.body.target.user.email;
+    let delext = req.body.deletereason,
+      text = `${req.body.admin.user.username} has deleted your question!\nHe claims that:\n${delext}`
+    emailer(to, text);
     db.question.destroy({
       where: {
         id: req.params.id
       }
     }).then((result) => res.json(result))
-  );
+  });
 }
