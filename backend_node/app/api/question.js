@@ -5,19 +5,14 @@ module.exports = (app, db) => {
     db.question.findAll({ include: [{ all: true }] }).then((result) => res.json(result))
   );
   app.get("/faquestions", (req, res) =>
-    db.question.findAll({ include: [{ all: true }, { model: db.answer, include: [{ all: true }] }] }).then((result) => res.json(result.slice(0, 5)))
-    // db.question.findAll({
-    //   include: [{ all: true }],
-    //   // attributes: [[sequelize.fn('COUNT', 'answer.id'), 'count_answers']],
-    // }).then(resu => {
-    //   return resu.reduce(function (p, v) {
-    //     v.comments = (v.comments.length);
-    //     console.log(v.comments.length)
-    //     p.push(v);
-    //     return p
-    //   }, [])
-    // }).then(r=>res.json(r))
-  );
+    db.question.findAll({
+      include: [{ all: true },
+      {
+        model: db.answer,
+        include: [{ all: true }]
+      }]
+    }).then((result) => res.json(result.slice(0, 5)))
+       );
 
   app.get("/question/:id", (req, res) =>
     db.question.findByPk(req.params.id, { include: [{ all: true }] }).then((result) => res.json(result))

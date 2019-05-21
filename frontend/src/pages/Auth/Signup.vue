@@ -93,19 +93,18 @@ export default {
   methods: {
     ...mapActions("account", ["register"]),
     errormessage() {
-      let usernameRegex = /^[a-z0-9\_]+$/i;
-      let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
       let x = "";
-      // return this.C_Password == this.Password ? "has-danger" : "has-success";
-      if (!this.Username.match(usernameRegex))
-        x +=
-          "<li>UserName: Only AlphaNumeric characters with Underscores allowed</li>";
-      if (!this.Email.match(emailRegex))
-        x += "<li>Your Email does not respect standard Email Form!</li>";
-      if (this.Password.length <= 6)
-        x += " <li>Password Length Should be more than 6 characters!</li>";
-      if (this.Password != this.C_Password)
-        x += "<li>Password does not match!</li>";
+      // let usernameRegex = /^[a-z0-9\_]+$/i;
+      // let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+      // if (!this.Username.match(usernameRegex))
+      //   x +=
+      //     "<li>UserName: Only AlphaNumeric characters with Underscores allowed</li>";
+      // if (!this.Email.match(emailRegex))
+      //   x += "<li>Your Email does not respect standard Email Form!</li>";
+      // if (this.Password.length <= 6)
+      //   x += " <li>Password Length Should be more than 6 characters!</li>";
+      // if (this.Password != this.C_Password)
+      //   x += "<li>Password does not match!</li>";
       return x;
     },
     submit_form() {

@@ -1,7 +1,7 @@
-const multer = require('multer');
-const uuidv1 = require('uuid/v1');
+const multer = require('multer'); 
 const path = require('path');
 var fs = require('fs');
+const nanoid = require('nanoid')
 const up_dir = __dirname + '/uploads';
 if (!fs.existsSync(up_dir)) {
     fs.mkdirSync(up_dir);
@@ -12,7 +12,7 @@ var storage = multer.diskStorage({
         cb(null, __dirname + '/uploads')
     },
     filename: function (req, file, cb) {
-        let v = uuidv1() + path.extname(file.originalname);
+        let v = nanoid() + path.extname(file.originalname);
         // console.log(v);
 
         cb(null, v)
@@ -31,7 +31,8 @@ module.exports = app => {
             return next(error)
         }
         res.json({
-            url: req.protocol + '://' + req.get('host') + `/download?file=${file.filename}`
+            url: req.protocol + '://' + req.get('host') + `/download?file=${file.filename}`,
+            del_url: req.protocol + '://' + req.get('host') + `/delete?file=${file.filename}`
         })
 
     })
@@ -50,7 +51,12 @@ module.exports = app => {
 
     app.get('/download', function (req, res) {
         var file = req.query.file;
-        res.sendfile(__dirname + '/uploads/' + file);
+        res.sendFile(__dirname + '/uploads/' + file);
+    });
+    app.get('/delete', function (req, res) {
+        var file = req.query.file;
+        fs.unlinkSync(__dirname + '/uploads/' + file);
+        res.json({ done: true })
     });
 
 }

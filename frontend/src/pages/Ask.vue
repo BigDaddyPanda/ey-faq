@@ -16,9 +16,21 @@
 
 <script>
 import _ from "lodash"
+import { mapState } from 'vuex';
 export default {
   
   computed:{
+    ...mapState(["account"]),
+    iamadmin: function() {
+      if (this.account.user && this.account.user.user)
+        return this.account.user.user.role.designation == "admin";
+      return false;
+    },
+    myauth: function() {
+      if (this.account.user && this.account.user.user)
+        return this.account.user.user;
+      return false;
+    },
     header_title(){
       return _.startCase(this.$route.path.split('/').pop())
     }

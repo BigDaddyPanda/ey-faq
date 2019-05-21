@@ -10,7 +10,7 @@
     <!-- <template slot-scope="{ toggle, isToggled }"> -->
     <template>
       <router-link v-popover:popover1 class="navbar-brand" to="/">{{helloworld}}</router-link>
-      <router-link v-popover:popover1 class="badge" to="/fa_question">Top Questions</router-link>
+      <router-link v-popover:popover1 class="badge" to="/fa_question">Top Questions</router-link>&nbsp;
       <router-link v-popover:popover1 class="badge" to="/fa_post">Top Articles</router-link>
     </template>
     <template slot="navbar-menu">
@@ -23,10 +23,16 @@
       </li>
 
       -->
-      <li v-if="account.user" class="nav-item">
+      <li v-if="myauth" class="nav-item">
         <router-link v-popover:popover1 class="nav-link" to="/user/edit_question">
           <i class="now-ui-icons travel_info"></i>
           <p>Ask A question</p>
+        </router-link>
+      </li>
+      <li v-else class="nav-item">
+        <router-link v-popover:popover1 class="nav-link" to="/auth">
+          <i class="now-ui-icons users_circle-08"></i>
+          <p>Authentificate</p>
         </router-link>
       </li>
       <li v-if="iamadmin">
@@ -36,7 +42,7 @@
         </router-link>
       </li>
       <li v-if="iamadmin">
-        <drop-down tag="li" class="nav-item" title="Management">
+        <drop-down tag="li" class="nav-item" title="Management" icon="now-ui-icons travel_info">
           <router-link class="text-primary nav-link" to="/admin/manage_user">
             <p>Manage Users</p>
           </router-link>
@@ -54,45 +60,60 @@
           </router-link>
         </drop-down>
       </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          rel="tooltip"
-          title="Follow us on Twitter"
-          data-placement="bottom"
-          href="https://twitter.com/"
-          target="_blank"
-        >
-          <i class="fab fa-twitter"></i>
-          <p class="d-lg-none d-xl-none">Twitter</p>
-        </a>
+      <li v-if="myauth">
+        <drop-down tag="li" class="nav-item" title="Profile" icon="now-ui-icons travel_info">
+          <router-link :to="`/user/profile?username=${myauth.username}`">
+            <n-button type="link" class="text-primary nav-link" >
+              <p>Settings</p>
+            </n-button>
+            <!-- <p>Sign-out</p> -->
+          </router-link>
+          <n-button type="link" @click="logout" class="text-primary nav-link">
+            <p>Sign-out</p>
+          </n-button>
+        </drop-down>
       </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          rel="tooltip"
-          title="Like us on Facebook"
-          data-placement="bottom"
-          href="https://www.facebook.com/"
-          target="_blank"
-        >
-          <i class="fab fa-linkedin"></i>
-          <p class="d-lg-none d-xl-none">Linkedin</p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          rel="tooltip"
-          title="Follow us on Instagram"
-          data-placement="bottom"
-          href="https://www.instagram.com/"
-          target="_blank"
-        >
-          <i class="fab fa-youtube"></i>
-          <p class="d-lg-none d-xl-none">Instagram</p>
-        </a>
-      </li>
+      <template v-else>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            rel="tooltip"
+            title="Follow us on Twitter"
+            data-placement="bottom"
+            href="https://twitter.com/"
+            target="_blank"
+          >
+            <i class="fab fa-twitter"></i>
+            <p class="d-lg-none d-xl-none">Twitter</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            rel="tooltip"
+            title="Like us on Facebook"
+            data-placement="bottom"
+            href="https://www.facebook.com/"
+            target="_blank"
+          >
+            <i class="fab fa-linkedin"></i>
+            <p class="d-lg-none d-xl-none">Linkedin</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            rel="tooltip"
+            title="Follow us on Instagram"
+            data-placement="bottom"
+            href="https://www.instagram.com/"
+            target="_blank"
+          >
+            <i class="fab fa-youtube"></i>
+            <p class="d-lg-none d-xl-none">Instagram</p>
+          </a>
+        </li>
+      </template>
     </template>
   </navbar>
 </template>
@@ -101,12 +122,16 @@
 /* eslint-disable */
 import { DropDown, NavbarToggleButton, Navbar, NavLink } from "@/components";
 import { Popover } from "element-ui";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "main-navbar",
   props: {
     transparent: Boolean,
     colorOnScroll: Number
+  },
+  methods: {
+    ...mapActions("account", ["logout"])
+    // logout
   },
   components: {
     DropDown,
@@ -120,6 +145,11 @@ export default {
     iamadmin: function() {
       if (this.account.user && this.account.user.user)
         return this.account.user.user.role.designation == "admin";
+      return false;
+    },
+    myauth: function() {
+      if (this.account.user && this.account.user.user)
+        return this.account.user.user;
       return false;
     },
     helloworld: function() {

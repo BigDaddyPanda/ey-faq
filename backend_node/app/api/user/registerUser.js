@@ -69,6 +69,7 @@ module.exports = app => {
             where: {
               username: data.username,
             },
+            include: [db.role, db.service]
           }).then(user => {
             console.log(user);
             user
@@ -83,16 +84,20 @@ module.exports = app => {
                   id: u.id
                 }, jwtSecret.secret);
 
-                let user = {
-                  username: u.username,
-                  first_name: u.first_name,
-                  last_name: u.last_name,
-                  email: u.email,
-                  token,
-                }
+                // let user = {
+                //   username: u.username,
+                //   first_name: u.first_name,
+                //   last_name: u.last_name,
+                //   email: u.email,
+                //   token,
+                // }
                 res.status(200).send({
                   message: 'user created',
-                  user
+                  user: {
+                    loggedIn: true,
+                    user: u,
+                    token
+                  }
                 });
               });
           });

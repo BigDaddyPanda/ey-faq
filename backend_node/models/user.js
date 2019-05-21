@@ -38,6 +38,7 @@ module.exports = (sequelize, type) => {
         },
         first_name: type.STRING,
         last_name: type.STRING,
+        photo_link: type.STRING,
         email: {
             type: type.STRING,
             allowNull: false,
@@ -52,18 +53,29 @@ module.exports = (sequelize, type) => {
         },
         resetPasswordToken: type.STRING,
         resetPasswordExpires: type.DATE,
-    });
+
+
+    }, {
+            scopes: {
+                default: {
+                    attributes: { exclude: ['password'] },
+                },
+                withoutCredentials: {
+                    attributes: { exclude: ['password', 'resetPasswordExpires', 'resetPasswordToken', "service", "role"] },
+                },
+            }
+        });
     user.associate = function (models) {
         // associations can be defined here
-        user.belongsTo(models.service,{ constraints: false, allowNull: true, defaultValue: null });
-        user.belongsTo(models.role,{ constraints: false, allowNull: true, defaultValue: null });
+        user.belongsTo(models.service, { constraints: false, allowNull: true, defaultValue: null });
+        user.belongsTo(models.role, { constraints: false, allowNull: true, defaultValue: null });
         // user.hasMany(models.attachement);
         //the post reaction association
-        user.hasMany(models.post,{ constraints: false, allowNull: true, defaultValue: null });
-        user.hasMany(models.answer,{ constraints: false, allowNull: true, defaultValue: null });
-        
-        user.hasMany(models.answer,{ constraints: false, allowNull: true, defaultValue: null });
-        user.hasMany(models.comment,{ constraints: false, allowNull: true, defaultValue: null });
+        user.hasMany(models.post, { constraints: false, allowNull: true, defaultValue: null });
+        user.hasMany(models.answer, { constraints: false, allowNull: true, defaultValue: null });
+
+        user.hasMany(models.answer, { constraints: false, allowNull: true, defaultValue: null });
+        user.hasMany(models.comment, { constraints: false, allowNull: true, defaultValue: null });
         // user.belongsToMany(models.post, {
         //     unique: false,
         //     through: { model: models.user_post, unique: false }, constraints: false, allowNull: true, defaultValue: null
@@ -75,5 +87,6 @@ module.exports = (sequelize, type) => {
     };
     const sequelizePaginate = require('sequelize-paginate');
     sequelizePaginate.paginate(user)
+
     return user;
 }

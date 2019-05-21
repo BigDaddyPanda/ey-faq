@@ -7,12 +7,14 @@ import store from './_vuex/_store';
 import VueScrollTo from 'vue-scrollto'
 import CKEditor from '@ckeditor/ckeditor5-vue';
 // MyCustomUploadAdapterPlugin
+import 'vue-select/dist/vue-select.css';
+import VeeValidate from 'vee-validate';
 Vue.config.productionTip = false;
 
 Vue.use(NowUiKit);
 Vue.use(VueScrollTo);
 Vue.use(CKEditor);
-
+Vue.use(VeeValidate);
 new Vue({
   router,
   store,

@@ -9,10 +9,12 @@ const actions = {
         commit('success', message);
     },
     error({ commit }, message) {
+        console.log('error', message);
         commit('error', message);
     },
-    clear({ commit }, message) {
-        commit('success', message);
+    clear({ commit }) {
+        console.log('clear');
+        commit('clear');
     }
 };
 

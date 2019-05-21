@@ -17,6 +17,7 @@ const actions = {
             .then(
                 user => {
                     commit('loginSuccess', user);
+                    dispatch('alert/success',`Welcome ${user.username}`);
                     router.push('/fa_question');
                 },
                 error => {
@@ -28,6 +29,7 @@ const actions = {
     logout({ commit }) {
         userService.logout();
         commit('logout');
+        router.push('/');
     },
     register({ dispatch, commit }, user) {
         commit('registerRequest', user);
@@ -35,12 +37,14 @@ const actions = {
         userService.register(user)
             .then(
                 user => {
+                    console.log("user", user);
+
                     commit('registerSuccess', user);
                     router.push('/fa_question');
-                    setTimeout(() => {
-                        // display success message after route change completes
-                        dispatch('alert/success', 'Registration successful', { root: true });
-                    })
+                    // setTimeout(() => {
+                    //     // display success message after route change completes
+                    //     dispatch('alert/success', 'Registration successful', { root: true });
+                    // })
                 },
                 error => {
                     commit('registerFailure', error);

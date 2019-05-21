@@ -1,15 +1,19 @@
 <template>
   <div id="app">
     <router-view name="header"/>
-    <alert v-if="alert.message" :type="alert.type" style="z-index:1040;top:4rem" dismissible>
+    <!--   -->
+    <alert
+      :type="alert.type||'success'"
+      style="z-index:1040;top:4rem;position: absolute;display: block; width:30%;"
+      dismissible
+      v-if="alert.type"
+    >
       <div class="alert-icon">
         <i class="now-ui-icons ui-2_like"></i>
       </div>
-      {{alert.message}}
+      {{alert.message||"Hi"}}
     </alert>
     <div class="wrapper">
-      <!-- <div v-if="alert.message" :class="`alert ${alert.type}`">{{ alert.message }}</div> -->
-
       <router-view/>
     </div>
     <router-view name="footer"/>

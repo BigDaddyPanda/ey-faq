@@ -62,7 +62,8 @@ function register(user) {
     then(handleResponse).then(data => {
         console.log(data)
         let user_data= data.user;
-        localStorage.setItem("user",JSON.stringify(user_data))
+        // localStorage.setItem("user",JSON.stringify(user_data));
+        return user_data;
     }).
     catch(err => console.log(err));
 }

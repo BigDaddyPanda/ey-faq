@@ -50,8 +50,11 @@ passport.use(
               username,
               password: hashedPassword,
               email: req.body.email,
+              // either we put the default value in the schema or here, same shit!
+              serviceId:1,
+              roleId:2,
             }).then((user) => {
-              console.log('user created');
+              console.log(`user ${user.username} created`);
               return done(null, user);
             });
           });
