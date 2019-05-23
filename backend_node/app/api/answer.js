@@ -46,7 +46,7 @@ module.exports = (app, db) => {
       })
   });
 
-  app.delete("/answer/:id", (req, res) => {
+  app.post("/delanswer/:id", (req, res) => {
     let responsible = req.body.responsible;
 
     db.answer.destroy({
@@ -55,7 +55,7 @@ module.exports = (app, db) => {
       }
     }).then(async (result) => {
       let to = await db.user.findByPk(result.userId),
-        text = `${responsible.username} has deleted your question!`
+        text = `${responsible.username} has deleted your Answer on!`
       emailer(to, text)
       res.json(result);
     })

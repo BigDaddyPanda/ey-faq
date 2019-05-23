@@ -91,7 +91,7 @@
             <div class="card-footer text-right">
               <div v-if="question_data.edited" class="text-success col-xs-2 my-0">
                 Edited By:
-                <span class="text-success">{{question_data.editor}}</span>
+                <span class="text-success">{{question_data.editedBy}}</span>
               </div>
               <div class="col-xs-2 my-0">
                 Posted By:
@@ -310,7 +310,7 @@ export default {
     },
     dangerRate(idAns) {
       axios
-        .delete(apiRes("answer", idAns), {
+        .post(apiRes("delanswer", idAns), {
           responsible: this.account.user.user
         })
         .then(r => window.location.reload());

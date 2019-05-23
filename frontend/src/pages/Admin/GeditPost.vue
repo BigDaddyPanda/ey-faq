@@ -5,17 +5,12 @@
     -->
     <div class="row justify-content-md-center">
       <div class="col-sm-12 col-lg-10 text-left">
-        <fg-input label="title" v-model="title" required placeholder="A suitable Highlight Title"></fg-input>
+        <fg-input label="title" v-model="title" required placeholder="Your post ..."></fg-input>
       </div>
     </div>
     <div class="row justify-content-md-center">
       <div class="col-sm-12 col-lg-10 text-left">
-        <fg-input
-          label="description"
-          v-model="description"
-          required
-          placeholder="Quick Overview about this Post"
-        ></fg-input>
+        <fg-input label="description" v-model="description" required placeholder="Your post ..."></fg-input>
       </div>
     </div>
     <div class="row justify-content-md-center">
@@ -33,11 +28,7 @@
       </div>
     </div>
     <n-button type="primary" @click.native="modal_handler = true">Preview Post</n-button>
-    <ckeditor 
-      :editor="editor"
-      v-model="content"
-      :config="editorConfig"
-    ></ckeditor>
+    <ckeditor @ready="onReady" :editor="editor" v-model="content" :config="editorConfig"></ckeditor>
 
     <modal :show.sync="modal_handler" headerClasses="justify-content-center">
       <h5>{{title}}</h5>
@@ -54,8 +45,8 @@
 <script>
 import { apiRes } from "@/utils";
 import axios from "axios";
+import DecoupledEditor from "@ckeditor/ckeditor5-build-decoupled-document";
 
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { MyCustomUploadAdapterPlugin } from "@/plugins/MyUploader.js";
 // console.log("Hello");
 // MyCustomUploadAdapterPlugin(ClassicEditor);
@@ -83,7 +74,7 @@ export default {
       serviceId: "",
       modal_handler: false,
       content: "<p>Content of the Post.</p>",
-      editor: ClassicEditor,
+      editor: DecoupledEditor,
       editorConfig: {
         // The configuration of the editor.
         height: 3000,
@@ -92,6 +83,15 @@ export default {
     };
   },
   methods: {
+    onReady(editor) {
+      // Insert the toolbar before the editable area.
+      editor.ui
+        .getEditableElement()
+        .parentElement.insertBefore(
+          editor.ui.view.toolbar.element,
+          editor.ui.getEditableElement()
+        );
+    },
     confirm: function() {
       axios
         .post(apiRes("post"), {

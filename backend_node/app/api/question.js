@@ -85,9 +85,9 @@ module.exports = (app, db) => {
         //   // result.setAttachements(req.body.attachements);
         //   return result
       }).then((result) => {
-        console.log("resss");
-        let to = "ky94@live.com";
-        // let to = result.user.email;
+        // console.log("resss");
+        // let to = "ky94@live.com";
+        let to = req.body.editor.user.email;
         let modificationtext = req.body.modificationtext,
           text = `${req.body.editor.user.username}/${req.body.editor.user.email} has edited your question!
           <br/>Modification Content: <br/>${modificationtext}
