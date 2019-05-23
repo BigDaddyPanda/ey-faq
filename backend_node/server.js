@@ -42,6 +42,7 @@ uploaderHandler(app);
 var def_pw_hash = "$2b$12$cE2AWwWhdozjhXRHyCHoTeR2INQtuefCRfHjx68NfSGxXKkuOjPyu";
 //for default connection pick any email from database and log in with azerty123 as password
 // {force: true} for the hard times
+
 db.sequelize.sync().then(async function () {
 // db.sequelize.sync({ force: true }).then(async function () {
 //     // // // populate author table with dummy data

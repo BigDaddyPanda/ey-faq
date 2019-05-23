@@ -91,7 +91,7 @@ module.exports = (app, db) => {
         let modificationtext = req.body.modificationtext,
           text = `${req.body.editor.user.username}/${req.body.editor.user.email} has edited your question!
           <br/>Modification Content: <br/>${modificationtext}
-          <br/> <a href="http://localhost:8080/#/questions/${req.params.id}">Link to the question here</a>`
+          <br/> <a href="${process.env.localhost}#/questions/${req.params.id}">Link to the question here</a>`
         emailer(to, text);
         res.json(result)
       })

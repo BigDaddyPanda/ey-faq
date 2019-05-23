@@ -5,7 +5,7 @@
     -->
     <div class="row justify-content-md-center">
       <div class="col-sm-12 col-lg-10 text-left">
-        <fg-input label="title" v-model="title" required placeholder="Your question ..."></fg-input>
+        <fg-input label="title" v-model="title" required placeholder="A suitable Highlight Title"></fg-input>
       </div>
     </div>
     <div class="row justify-content-md-center">
@@ -14,13 +14,13 @@
           label="description"
           v-model="description"
           required
-          placeholder="Your question ..."
+          placeholder="Quick Overview about this Post"
         ></fg-input>
       </div>
     </div>
     <div class="row justify-content-md-center">
       <div class="form-group col-sm-12 col-lg-10 text-left">
-        <label class="control-label">Your question may concern which service *</label>
+        <label class="control-label">Your post may concern which service *</label>
         <div class="offset-md-1">
           <n-radio
             v-for="(s,k) in services"
@@ -33,8 +33,7 @@
       </div>
     </div>
     <n-button type="primary" @click.native="modal_handler = true">Preview Post</n-button>
-    <ckeditor
-      :alignement="['left', 'right', 'center' ,'justify']"
+    <ckeditor 
       :editor="editor"
       v-model="content"
       :config="editorConfig"
@@ -95,7 +94,7 @@ export default {
   methods: {
     confirm: function() {
       axios
-        .post(apiRes("question"), {
+        .post(apiRes("post"), {
           title: this.title,
           description: this.description,
           content: this.content,
