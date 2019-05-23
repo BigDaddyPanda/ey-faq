@@ -63,9 +63,9 @@
           <router-link class="text-primary nav-link" to="/admin/manage_service">
             <p>Manage Services</p>
           </router-link>
-          <router-link class="text-primary nav-link" to="/admin/manage_role">
+          <!-- <router-link class="text-primary nav-link" to="/admin/manage_role">
             <p>Manage Roles</p>
-          </router-link>
+          </router-link> -->
         </drop-down>
       </li>
       <li v-if="myauth">

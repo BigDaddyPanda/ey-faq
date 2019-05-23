@@ -68,12 +68,12 @@
               v-for="(user,id) in full_focus_data.users.filter(e=>e.role.designation==role)"
               :key="id"
             >
-              <img
+              <!-- <img
                 v-lazy="'img/julie.jpg'"
                 alt="Circle Image"
                 class="rounded-circle"
                 style="width:2.5rem"
-              >
+              > -->
 
               <badge href="#" type="primary">{{user.username}}</badge>
             </div>

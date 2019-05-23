@@ -40,7 +40,7 @@
               <footer class="blockquote-footer">{{fa.description}}</footer>
               <footer
                 class="blockquote-footer text-right"
-              >By {{fa.user.username}}, {{fa.answers.length}} Views</footer>
+              >By {{fa.user&&fa.user.username}}, {{fa.answers.length}} Views</footer>
             </li>
           </ul>
           <div v-else>No data could be fetched!</div>

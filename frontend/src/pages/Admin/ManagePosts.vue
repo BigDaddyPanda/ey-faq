@@ -9,17 +9,17 @@
             v-model="filterText"
             class="three wide column"
             @keyup.enter="doFilter"
-            placeholder="name, nickname, or designation"
+            placeholder="title..."
           >
           <button class="ui primary button" @click="doFilter">Go</button>
           <button class="ui button" @click="resetFilter">Reset</button>
         </div>
       </div>
-      <button class="ui button ml-auto" @click="add_new_modal">Add New Service</button>
+      <!-- <button class="ui button ml-auto" @click="add_new_modal">Add New Post</button> -->
     </div>
     <vuetable
       ref="vuetable"
-      api-url="http://127.0.0.1:5000/api/service?attributes=id,designation"
+      api-url="http://127.0.0.1:5000/api/post?attributes=id,title,description,userId,serviceId"
       :fields="fields"
       :append-params="moreParams"
       :multi-sort="true"
@@ -29,12 +29,9 @@
     >
       <template slot="actions" scope="props">
         <div class="custom-actions">
-          <button
-            class="ui basic button"
-            @click="onAction('view-item', props.rowData, props.rowIndex)"
-          >
+          <router-link class="ui basic button" :to="`/posts/${props.rowData.id}`">
             <i class="zoom icon"></i>
-          </button>
+          </router-link>
           <button
             class="ui basic button"
             @click="onAction('edit-item', props.rowData, props.rowIndex)"
@@ -54,58 +51,58 @@
       <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
       <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
     </div>
-    <modal :show.sync="view_modal" headerClasses="justify-content-center">
-      <h4 slot="header" class="title title-up">Service #{{full_focus_data.id}}</h4>
-      <div class="modal-body">
-        <span class="display-5">Designation:</span>
-        <br>
-        <span class="display-4">{{full_focus_data.designation}}</span>
-        <div v-for="(role,index) in roles" :key="index" class="col-xs-12 my-0">
-          <hr>
-          <h6>{{role}}</h6>
-          <div v-if="full_focus_data.users">
-            <div
-              v-for="(user,id) in full_focus_data.users.filter(e=>e.role.designation==role)"
-              :key="id"
-            >
-              <img
-                v-lazy="'img/julie.jpg'"
-                alt="Circle Image"
-                class="rounded-circle"
-                style="width:2.5rem"
-              >
-
-              <badge href="#" type="primary">{{user.username}}</badge>
-            </div>
-          </div>
-          <div v-else>No Assigned Employee</div>
+    <modal :show.sync="edit_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">Modify Post</h4>
+      <div>
+        Mark as:&nbsp;
+        Pending
+        <n-radio inline v-model="newTag" label="pending"></n-radio>Solved
+        <n-radio inline v-model="newTag" label="solved"></n-radio>Closed
+        <n-radio inline v-model="newTag" label="closed"></n-radio>
+      </div>
+      <hr>
+      <div>
+        Modify Services:&nbsp;
+        <div>
+          <n-radio
+            v-for="(x,y) in services"
+            :key="y"
+            inline
+            v-model="newService"
+            :label="x.id"
+          >{{x.designation}}</n-radio>
         </div>
       </div>
-      <template slot="footer">
-        <n-button type="danger" @click.native="hide_modal()">Close</n-button>
-      </template>
-    </modal>
-    <modal :show.sync="edit_modal" headerClasses="justify-content-center">
-      <h4 slot="header" class="title title-up">Modify Service</h4>
-      <fg-input
-        class="col-12"
-        label="Service Designation"
-        placeholder
-        :value="focus_data.designation"
-        v-model="focus_data.designation"
-        type="text"
-      ></fg-input>
+      <hr>
+      <div class="text-left">
+        <div class="form-group">
+          <label
+            for="exampleFormControlTextarea2"
+          >Suggest a Modification, User will be notified for the changes</label>
+          <textarea class="form-control rounded-0" v-model="modificationtext" rows="4"></textarea>
+        </div>
+        <h4>Post Preview</h4>
 
+        <hr>
+        <div v-if="full_focus_data&&full_focus_data.title">
+          <h4>Title</h4>
+          {{full_focus_data.title}}
+          <h4>Description</h4>
+          {{full_focus_data.description}}
+          <h4>Content</h4>
+          {{full_focus_data.content}}
+        </div>
+      </div>
       <template slot="footer">
         <n-button type="danger" @click.native="hide_modal()">Close</n-button>
         <n-button @click="submit_action('edit')">Confirm</n-button>
       </template>
     </modal>
-    <modal :show.sync="create_modal" headerClasses="justify-content-center">
-      <h4 slot="header" class="title title-up">Create Service</h4>
+    <!-- <modal :show.sync="create_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">Create Post</h4>
       <fg-input
         class="col-12"
-        label="Service Designation"
+        label="Post Designation"
         placeholder
         :value="focus_data.designation"
         v-model="focus_data.designation"
@@ -116,11 +113,17 @@
         <n-button type="danger" @click.native="add_new_modal()">Close</n-button>
         <n-button @click="submit_action('create')">Confirm</n-button>
       </template>
-    </modal>
+    </modal>-->
     <modal :show.sync="dele_modal" headerClasses="justify-content-center">
-      <h4 slot="header" class="title title-up text-danger">Delete Service</h4>
+      <h4 slot="header" class="title title-up text-danger">Delete Post</h4>
       <h3 class="text-danger">Warning!</h3>
-      <h4>You are about to delete a whole Service! Every related user, post, question will be set to Default ones!</h4>
+      <h4>You are about to delete a whole Post! Owner user will be Notified ones!</h4>
+      <div class="form-group">
+        <label
+          for="exampleFormControlTextarea2"
+        >If you insist, please provide a message to the Owner</label>
+        <textarea class="form-control rounded-0" v-model="deletereason"></textarea>
+      </div>
       <template slot="footer">
         <n-button type="danger" simple @click.native="hide_modal()">Close</n-button>
         <n-button type="danger" @click="submit_action('delete')">I know what I am doing</n-button>
@@ -135,20 +138,35 @@ import moment from "moment";
 import { nextTick } from "q";
 import axios from "axios";
 import { apiRes } from "@/utils";
+import { mapState } from "vuex";
 // import router from "@/router";
 
 export default {
   mounted() {
-    axios.get(apiRes("roles", "")).then(resp => {
-      this.roles = resp.data.reduce((q, p) => {
-        q.push(p.designation);
-        return q;
-      }, []);
-    });
+    // axios.get(apiRes("roles", "")).then(resp => {
+    //   this.roles = resp.data.reduce((q, p) => {
+    //     q.push(p.designation);
+    //     return q;
+    //   }, []);
+    // });
+  },
+  computed: {
+    ...mapState(["globalData", "account"]),
+    services: function() {
+      // console.log(this.globalData);
+      if (this.globalData && this.globalData.services)
+        return this.globalData.services;
+      return false;
+    },
+    myuser: function() {
+      if (this.account.user && this.account.user.user) {
+        return this.account.user;
+      }
+    }
   },
   data() {
     return {
-      roles: [],
+      // roles: [],
       create_modal: false,
       focus_data: {},
       full_focus_data: {},
@@ -159,13 +177,21 @@ export default {
       moreParams: {},
       sortOrder: [
         {
-          field: "designation",
+          field: "title",
           direction: "des"
         }
       ],
+      modificationtext: "",
+      deletereason: "",
+      newTag: (this.full_focus_data && this.full_focus_data.tag) || "pending",
+      newService: (this.full_focus_data && this.full_focus_data.serviceId) || 1,
       fields: [
         { name: "id", sortField: "id" },
-        { name: "designation", sortField: "designation" },
+        { name: "title", sortField: "title" },
+        { name: "description", sortField: "description" },
+        { name: "tag", sortField: "tag" },
+        { name: "userId", sortField: "userId" },
+        { name: "serviceId", sortField: "serviceId" },
         {
           name: "__slot:actions",
           title: "Actions",
@@ -180,7 +206,7 @@ export default {
       if (id == "") this.full_focus_data = {};
       else {
         axios
-          .get(apiRes("service", id))
+          .get(apiRes("post", id))
           .then(response => {
             this.full_focus_data = response.data;
           })
@@ -207,40 +233,42 @@ export default {
           this.edit_modal = false;
           this.view_modal = true;
           this.dele_modal = false;
-          this.getFullFocus(data.id);
           break;
         default:
           this.edit_modal = true;
           this.view_modal = false;
           this.dele_modal = false;
+          this.getFullFocus(data.id);
           break;
       }
     },
     submit_action(act) {
       if (act == "create") {
-        axios
-          .post(apiRes("service", ""), {
-            designation: this.focus_data.designation
-          })
-          .then(resp => {
-            this.hide_modal();
-            nextTick(() => this.$refs.vuetable.refresh());
-          });
+        alert("Action not implemented");
       } else {
         if (act == "edit") {
+          let { modificationtext, newTag, newService } = this;
           axios
-            .put(apiRes("service", this.focus_data.id), {
-              designation: this.focus_data.designation
+            .put(apiRes("post", this.focus_data.id), {
+              modificationtext,
+              newTag,
+              newService,
+              editor: this.myuser
             })
             .then(resp => {
               this.hide_modal();
               nextTick(() => this.$refs.vuetable.refresh());
             });
         } else {
-          axios.delete(apiRes("service", this.focus_data.id)).then(resp => {
-            this.hide_modal();
-            nextTick(() => this.$refs.vuetable.refresh());
+          axios.put(apiRes("delpost", this.focus_data.id), {
+            deletereason: this.deletereason,
+            target: this.full_focus_data,
+            admin: this.myuser
           });
+          // .then(resp => {
+          //   this.hide_modal();
+          //   nextTick(() => this.$refs.vuetable.refresh());
+          // });
         }
       }
     },
@@ -249,17 +277,6 @@ export default {
       this.edit_modal = false;
       this.view_modal = false;
       this.dele_modal = false;
-    },
-    genderLabel(value) {
-      return value === "M"
-        ? '<span class="badge bg-primary"><i class="large man icon"></i>Male</span>'
-        : '<span class="badge bg-primary"><i class="large woman icon"></i>Female</span>';
-    },
-    formatNumber(value) {
-      return accounting.formatNumber(value, 2);
-    },
-    formatDate(value, fmt = "D MMM YYYY") {
-      return value == null ? "" : moment(value, "YYYY-MM-DD").format(fmt);
     },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);

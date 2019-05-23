@@ -24,7 +24,7 @@
         <br>
         <card class="card-signup" header-classes="text-center" color="orange">
           <template slot="header">
-            <h3 class="card-title title-up">Sign Up</h3>
+            <h3 class="card-title title-up">Login</h3>
             <div class="social-line">
               <!-- <a class="btn btn-neutral btn-facebook btn-icon btn-round">
                 <i class="fab fa-facebook-square"></i>

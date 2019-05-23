@@ -15,7 +15,7 @@
           <button class="ui button" @click="resetFilter">Reset</button>
         </div>
       </div>
-      <button class="ui button ml-auto" @click="add_new_modal">Add New Question</button>
+      <!-- <button class="ui button ml-auto" @click="add_new_modal">Add New Question</button> -->
     </div>
     <vuetable
       ref="vuetable"

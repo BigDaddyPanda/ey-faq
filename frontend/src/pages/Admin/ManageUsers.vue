@@ -9,16 +9,17 @@
             v-model="filterText"
             class="three wide column"
             @keyup.enter="doFilter"
-            placeholder="name, nickname, or email"
+            placeholder="designation..."
           >
           <button class="ui primary button" @click="doFilter">Go</button>
           <button class="ui button" @click="resetFilter">Reset</button>
         </div>
       </div>
+      <button class="ui button ml-auto" @click="add_new_modal">Add New User</button>
     </div>
     <vuetable
       ref="vuetable"
-      api-url="http://127.0.0.1:5000/users"
+      api-url="http://127.0.0.1:5000/api/user?attributes=id,first_name,last_name,photo_link,email,username"
       :fields="fields"
       :append-params="moreParams"
       :multi-sort="true"
@@ -34,12 +35,12 @@
           >
             <i class="zoom icon"></i>
           </button>
-          <button
+          <!-- <button
             class="ui basic button"
             @click="onAction('edit-item', props.rowData, props.rowIndex)"
           >
             <i class="edit icon"></i>
-          </button>
+          </button>-->
           <button
             class="ui basic button"
             @click="onAction('delete-item', props.rowData, props.rowIndex)"
@@ -53,6 +54,63 @@
       <vuetable-pagination-info ref="paginationInfo"></vuetable-pagination-info>
       <vuetable-pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination>
     </div>
+    <modal :show.sync="view_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">User #{{full_focus_data.id}}</h4>
+      <div class="modal-body">
+        <p class="display-5">first_name: {{full_focus_data.first_name}}</p>
+        <p class="display-5">last_name: {{full_focus_data.last_name}}</p>
+        <p class="display-5">
+          Photo
+          <img :src="full_focus_data.photo_link" alt="Profile">
+        </p>
+        <p class="display-5">email: {{full_focus_data.email}}</p>
+        <p class="display-5">username: {{full_focus_data.username}}</p>
+      </div>
+      <template slot="footer">
+        <n-button type="danger" @click.native="hide_modal()">Close</n-button>
+      </template>
+    </modal>
+    <modal :show.sync="edit_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">Modify User</h4>
+      <fg-input
+        class="col-12"
+        label="User Designation"
+        placeholder
+        :value="focus_data.designation"
+        v-model="focus_data.designation"
+        type="text"
+      ></fg-input>
+
+      <template slot="footer">
+        <n-button type="danger" @click.native="hide_modal()">Close</n-button>
+        <n-button @click="submit_action('edit')">Confirm</n-button>
+      </template>
+    </modal>
+    <!-- <modal :show.sync="create_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up">Create User</h4>
+      <fg-input
+        class="col-12"
+        label="User Designation"
+        placeholder
+        :value="focus_data.designation"
+        v-model="focus_data.designation"
+        type="text"
+      ></fg-input>
+
+      <template slot="footer">
+        <n-button type="danger" @click.native="add_new_modal()">Close</n-button>
+        <n-button @click="submit_action('create')">Confirm</n-button>
+      </template>
+    </modal>-->
+    <modal :show.sync="dele_modal" headerClasses="justify-content-center">
+      <h4 slot="header" class="title title-up text-danger">Delete User</h4>
+      <h3 class="text-danger">Warning!</h3>
+      <h4>You are about to delete a User!</h4>
+      <template slot="footer">
+        <n-button type="danger" simple @click.native="hide_modal()">Close</n-button>
+        <n-button type="danger" @click="submit_action('delete')">I know what I am doing</n-button>
+      </template>
+    </modal>
   </div>
 </template>
 
@@ -60,12 +118,28 @@
 import accounting from "accounting";
 import moment from "moment";
 import { nextTick } from "q";
-// import Vuetable from 'vuetable-2/src/components/Vuetable'
-// import VuetablePagination from 'vuetable-2/src/components/VuetablePagination'
+import axios from "axios";
+import { apiRes } from "@/utils";
+// import router from "@/router";
 
 export default {
+  mounted() {
+    axios.get(apiRes("roles", "")).then(resp => {
+      this.roles = resp.data.reduce((q, p) => {
+        q.push(p.designation);
+        return q;
+      }, []);
+    });
+  },
   data() {
     return {
+      roles: [],
+      create_modal: false,
+      focus_data: {},
+      full_focus_data: {},
+      edit_modal: false,
+      view_modal: false,
+      dele_modal: false,
       filterText: "",
       moreParams: {},
       sortOrder: [
@@ -75,36 +149,12 @@ export default {
         }
       ],
       fields: [
-        { name: "name", sortField: "name" },
+        { name: "id", sortField: "id" },
+        { name: "first_name", sortField: "first_name" },
+        { name: "last_name", sortField: "last_name" },
+        { name: "photo_link", sortField: "photo_link" },
         { name: "email", sortField: "email" },
-        {
-          name: "birthdate",
-          sortField: "birthdate",
-          titleClass: "center aligned",
-          dataClass: "center aligned",
-          callback: "formatDate|DD-MM-YYYY"
-        },
-        {
-          name: "nickname",
-          sortField: "nickname",
-          // callback: "allcap",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "gender",
-          sortField: "gender",
-          titleClass: "text-left",
-          dataClass: "text-left",
-          callback: "genderLabel"
-        },
-        {
-          name: "salary",
-          sortField: "salary",
-          titleClass: "center aligned",
-          dataClass: "right aligned",
-          callback: "formatNumber"
-        },
+        { name: "username", sortField: "username" },
         {
           name: "__slot:actions",
           title: "Actions",
@@ -115,23 +165,79 @@ export default {
     };
   },
   methods: {
+    getFullFocus(id) {
+      if (id == "") this.full_focus_data = {};
+      else {
+        axios
+          .get(apiRes("user", id))
+          .then(response => {
+            this.full_focus_data = response.data;
+          })
+          .catch(error => {
+            this.full_focus_data = {};
+          });
+      }
+    },
     allcap(value) {
       return value.toUpperCase();
     },
-
+    add_new_modal() {
+      this.create_modal = !this.create_modal;
+    },
     onAction(action, data, index) {
-      console.log("slot action: " + action, data.name, index);
+      this.focus_data = data;
+      switch (action) {
+        case "delete-item":
+          this.edit_modal = false;
+          this.view_modal = false;
+          this.dele_modal = true;
+          break;
+        case "view-item":
+          this.edit_modal = false;
+          this.view_modal = true;
+          this.dele_modal = false;
+          this.getFullFocus(data.id);
+          break;
+        default:
+          this.edit_modal = true;
+          this.view_modal = false;
+          this.dele_modal = false;
+          break;
+      }
     },
-    genderLabel(value) {
-      return value === "M"
-        ? '<span class="badge bg-primary"><i class="large man icon"></i>Male</span>'
-        : '<span class="badge bg-primary"><i class="large woman icon"></i>Female</span>';
+    submit_action(act) {
+      if (act == "create") {
+        axios
+          .post(apiRes("user", ""), {
+            designation: this.focus_data.designation
+          })
+          .then(resp => {
+            this.hide_modal();
+            nextTick(() => this.$refs.vuetable.refresh());
+          });
+      } else {
+        if (act == "edit") {
+          axios
+            .put(apiRes("user", this.focus_data.id), {
+              designation: this.focus_data.designation
+            })
+            .then(resp => {
+              this.hide_modal();
+              nextTick(() => this.$refs.vuetable.refresh());
+            });
+        } else {
+          axios.delete(apiRes("user", this.focus_data.id)).then(resp => {
+            this.hide_modal();
+            nextTick(() => this.$refs.vuetable.refresh());
+          });
+        }
+      }
     },
-    formatNumber(value) {
-      return accounting.formatNumber(value, 2);
-    },
-    formatDate(value, fmt = "D MMM YYYY") {
-      return value == null ? "" : moment(value, "YYYY-MM-DD").format(fmt);
+    hide_modal() {
+      this.focus_data = {};
+      this.edit_modal = false;
+      this.view_modal = false;
+      this.dele_modal = false;
     },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
