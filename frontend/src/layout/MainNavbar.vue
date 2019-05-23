@@ -23,12 +23,20 @@
       </li>
 
       -->
-      <li v-if="myauth" class="nav-item">
-        <router-link v-popover:popover1 class="nav-link" to="/user/edit_question">
-          <i class="now-ui-icons travel_info"></i>
-          <p>Ask A question</p>
-        </router-link>
-      </li>
+      <template v-if="myauth">
+        <li class="nav-item">
+          <router-link v-popover:popover1 class="nav-link" to="/user/edit_question">
+            <i class="now-ui-icons travel_info"></i>
+            <p>Ask A question</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link v-popover:popover1 class="nav-link" to="/user/my_questions">
+            <i class="now-ui-icons travel_info"></i>
+            <p>View questions</p>
+          </router-link>
+        </li>
+      </template>
       <li v-else class="nav-item">
         <router-link v-popover:popover1 class="nav-link" to="/auth">
           <i class="now-ui-icons users_circle-08"></i>
@@ -63,7 +71,7 @@
       <li v-if="myauth">
         <drop-down tag="li" class="nav-item" title="Profile" icon="now-ui-icons travel_info">
           <router-link :to="`/user/profile?username=${myauth.username}`">
-            <n-button type="link" class="text-primary nav-link" >
+            <n-button type="link" class="text-primary nav-link">
               <p>Settings</p>
             </n-button>
             <!-- <p>Sign-out</p> -->

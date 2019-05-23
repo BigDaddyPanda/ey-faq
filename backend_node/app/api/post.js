@@ -60,8 +60,7 @@ module.exports = (app, db) => {
   // app.delete
   app.put("/delpost/:id", (req, res) => {
     console.log(req.params);
-    console.log(req.body.deletereason);
-    let to = "ky94@live.com";
+    console.log(req.body.deletereason); 
     // let to = req.body.target.user.email;
     let delext = req.body.deletereason,
       text = `${req.body.admin.user.username} has deleted your post!\nHe claims that:\n${delext}`

@@ -31,6 +31,7 @@ import {
   Tooltip,
   DatePicker
 } from 'element-ui';
+import { DataTable } from 'v-datatable-light'
 
 import Vuetable from 'vuetable-2/src/components/Vuetable';
 import VueTablePaginationDropDown from 'vuetable-2/src/components/VuetablePaginationDropdown';
@@ -41,7 +42,8 @@ import vSelect from 'vue-select'
 
 const globalComponents = {
   install(Vue) {
-    Vue.component('v-select', vSelect)
+    Vue.component('v-data-table', DataTable);
+    Vue.component('v-select', vSelect);
     Vue.component("vuetable", Vuetable);
     Vue.component("vuetable-pagination", VuetablePagination);
     Vue.component("vuetable-pagination-info", VueTablePaginationInfo);

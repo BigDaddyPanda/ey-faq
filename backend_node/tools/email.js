@@ -13,7 +13,7 @@ module.exports = (to, text) => {
         from: 'eymentor.eymentor@gmail.com',
         to,
         subject: 'EY Mentor Updates!',
-        text
+        html: text
     };
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {

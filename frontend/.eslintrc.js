@@ -15,6 +15,7 @@ module.exports = {
     'vue/max-attributes-per-line': 'off',
     'vue/no-unused-vars': 'off',
     "vue/require-default-prop": "off",
+    "vue/name-property-casing": "off",
     'vue/v-on-style': 'off'
   }
 }

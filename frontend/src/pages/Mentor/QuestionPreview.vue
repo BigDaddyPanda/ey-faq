@@ -3,18 +3,18 @@
     <div class="row justify-content-md-center">
       <div class="col-xs-10 col-md-10" ref="Overview" id="Overview">
         <div class="card" v-if="my_publisher||my_admin">
-          <div class="row" v-if="my_publisher">
-            <div class="col ml-2 align-self-center">Modify Your Question</div>
+          <div class="row">
+            <div v-if="my_publisher" class="col ml-2 align-self-center">Modify Your Question</div>
+            <div v-else class="col ml-2 align-self-center">Modify This Question</div>
             <div class="col-md-4 text-right mr-2">
-              <button class="btn btn-danger btn-sm outline">Delete</button>
-              <button class="btn btn-primary btn-sm">Modify</button>
-            </div>
-          </div>
-          <div class="row" v-else-if="my_admin">
-            <div class="col ml-2 align-self-center">Modify This Question</div>
-            <div class="col-md-4 text-right mr-2">
-              <button class="btn btn-danger btn-sm outline">Delete</button>
-              <button class="btn btn-primary btn-sm">Modify</button>
+              <button
+                @click="questionDelete"
+                class="btn btn-danger btn-sm outline"
+              >{{editingMode == "preview"?'Delete':'RollBack'}}</button>
+              <button
+                @click="questionModify"
+                class="btn btn-primary btn-sm outline"
+              >{{editingMode == "preview"?'Modify':'Apply'}}</button>
             </div>
           </div>
         </div>
@@ -28,16 +28,63 @@
                   {{question_data.tag}}
                 </n-button>
               </h6>
-              <h5 class="card-title text-left text-primary">{{question_data.title}}</h5>
-              <p class="card-description text-muted text-left">{{question_data.description}}</p>
-              <badge type="primary">#{{question_data.service.designation}}</badge>
+              <!--  -->
+              <fg-input
+                v-if="editingMode=='modify'"
+                label="Subject"
+                v-model="question_data.title"
+                name="title"
+                v-validate="'required'"
+                required
+                placeholder="Your question ..."
+              ></fg-input>
+
+              <h5 v-else class="card-title text-left text-primary">{{question_data.title}}</h5>
+              <!--  -->
+              <fg-input
+                v-if="editingMode=='modify'"
+                label="Description"
+                v-model="question_data.description"
+                name="description"
+                v-validate="'required'"
+                required
+                placeholder="Small description of the issue ..."
+              ></fg-input>
+
+              <p v-else class="card-description text-muted text-left">{{question_data.description}}</p>
+
+              <v-select
+                v-if="editingMode=='modify'"
+                label="designation"
+                :reduce="it => it.id"
+                v-model="question_data.serviceId"
+                name="serviceId"
+                v-validate="'required'"
+                :options="globalData.services"
+              ></v-select>
+              <badge v-else type="primary">#{{question_data.service.designation}}</badge>
               <!-- <div class="card-footer text-left"></div> -->
               <hr>
               <h5 class="py-0 my-0 text-left">Question</h5>
-              <p class="card-description text-left">{{question_data.content}}</p>
+              <textarea
+                v-if="editingMode=='modify'"
+                class="form-control rounded-0"
+                v-model="question_data.content"
+                required
+                name="content"
+                v-validate="'required'"
+              ></textarea>
+              <p v-else class="card-description text-left">{{question_data.content}}</p>
+
               <ul>
                 <li v-for="(att,k) in question_data.attachements" :key="k">
                   <a :href="`${att.link}`" target="_blank">attachement#{{att.id}}</a>
+                  <!-- sss -->
+                  <span v-if="editingMode=='modify'" class="text-right">
+                    <n-button type="success" icon @click="deleteAttachement(k)" round size="sm">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </n-button>
+                  </span>
                 </li>
               </ul>
             </div>
@@ -53,17 +100,25 @@
             </div>
           </card>
           <h2 class="text-left">Answer(s)</h2>
-          <div>
+          <div v-if="isauthed">
             <card type="blog" ref="Answer" id="Answer">
               <div class="card-body py-0">
                 <div class="row py-0">
                   <span class="col-8 align-self-center">Your Answer:</span>
                 </div>
                 <div class="card-description text-left">
-                  <fg-input v-model="myanswer"/>
+                  <!-- <fg-input v-model="myanswer"/> -->
+                  <textarea
+                    class="form-control rounded-0"
+                    v-model="myanswer"
+                    required
+                    name="content"
+                    v-validate="'required'"
+                    :rows="4"
+                  ></textarea>
                 </div>
                 <div class="card-description text-right">
-                  <n-button>Submit</n-button>
+                  <n-button @click="submitAnswer">Submit</n-button>
                 </div>
               </div>
             </card>
@@ -74,9 +129,19 @@
               <card type="blog" ref="Answer" id="Answer">
                 <div class="card-body py-0">
                   <div class="row py-0">
-                    <span class="col-8 align-self-center">user #{{answer.userId}} said:</span>
-                    <span class="col-4 ml-auto text-right">
-                      <n-button type="success" icon round size="sm">
+                    <span class="col-8 align-self-center">
+                      <i v-if="answer.is_best" class="text-primary now-ui-icons objects_key-25"></i>
+                      user #{{answer.userId}} said:
+                    </span>
+                    <span class="col-4 ml-auto text-right" v-if="question_data.tag=='pending'">
+                      <n-button
+                        type="success"
+                        icon
+                        v-if="my_admin||my_publisher"
+                        @click="successRate(answer.id)"
+                        round
+                        size="sm"
+                      >
                         <i class="now-ui-icons ui-2_like"></i>
                       </n-button>
                       <n-button
@@ -85,13 +150,15 @@
                         class="pl-auto"
                         icon
                         round
+                        v-if="my_admin||my_publisher||isauthed&&isauthed.id==answer.userId"
+                        @click="dangerRate(answer.id)"
                         size="sm"
                       >
                         <i class="now-ui-icons ui-2_like"></i>
                       </n-button>
                     </span>
                   </div>
-                  <p class="card-description text-left">{{answer.content}}</p>
+                  <p v-html="answer.content.replace('\n','<br/>')"></p>
                 </div>
               </card>
             </div>
@@ -105,74 +172,50 @@
         </div>
       </div>
     </div>
+    <modal
+      :show.sync="modal_show"
+      class="modal-primary"
+      :show-close="false"
+      header-classes="justify-content-center"
+      type="mini"
+    >
+      <div slot="header" class="modal-profile d-flex justify-content-center align-items-center">
+        <i class="now-ui-icons design_scissors"></i>
+      </div>
+      <p>
+        Are you sure you want to permanently Delete this Question?
+        <br>
+        Tell us why: {{ errors.first('delete reason') }}
+      </p>
+      <textarea
+        class="form-control rounded-0"
+        v-model="deletereason"
+        required
+        name="delete reason"
+        v-validate="'required'"
+        placeholder="reason for deletion"
+        :rows="4"
+      ></textarea>
+      <template slot="footer">
+        <n-button type="neutral" link @click="toggleModal">Nevermind</n-button>
+        <n-button
+          type="danger"
+          link
+          @click.native="deletereason!=''?toggleModal('mechni nfadlek'):null"
+        >Yes I am Sure</n-button>
+      </template>
+    </modal>
   </div>
 </template>
 
 <script>
-/**
- "id": 1,
-  "title": "",
-  "description": "Et deleniti dolor omnis earum odio eligendi temporibus.",
-  "content": "",
-  "visited": 1,
-  "edited": null,
-  "editedBy": null,
-  "createdAt": "2019-05-15T22:44:40.000Z",
-  "updatedAt": "2019-05-15T22:44:40.000Z",
-  "userId": 6,
-  "serviceId": 1,
-  "tag":"pending"
-  "user": {
-    "id": 6,
-    "first_name": "Garland",
-    "last_name": "O'Kon",
-    "email": "Samantha.Konopelski32@gmail.com",
-    "username": "Alisa_Will",
-    "password": "$2b$12$cE2AWwWhdozjhXRHyCHoTeR2INQtuefCRfHjx68NfSGxXKkuOjPyu",
-    "resetPasswordToken": null,
-    "resetPasswordExpires": null,
-    "createdAt": "2019-05-15T22:44:40.000Z",
-    "updatedAt": "2019-05-15T22:44:40.000Z",
-    "serviceId": 2,
-    "roleId": 2
-  },
-  "service": {
-    "id": 1,
-    "designation": "General Information",
-    "createdAt": "2019-05-15T22:44:40.000Z",
-    "updatedAt": "2019-05-15T22:44:40.000Z"
-  },
-  "answers": [
-    {
-      "id": 3,
-      "content": "Optio repellat nesciunt voluptas quo fuga provident qui esse.",
-      "edited": null,
-      "editedBy": null,
-      "createdAt": "2019-05-15T22:44:40.000Z",
-      "updatedAt": "2019-05-15T22:44:40.000Z",
-      "userId": 1,
-      "questionId": 1
-    }, 
- */
-
-// title
-// description
-// content
-// visited
-// edited
-// editedBy
-// createdAt
-// updatedAt
-// user
-// service
-// answers
-
 import { apiRes } from "@/utils";
 import axios from "axios";
 import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState(["account"]),
+    ...mapState(["globalData"]),
     my_admin: function() {
       if (this.account && this.account.status && this.account.status.loggedIn)
         if (this.account.user.user.role.designation == "admin")
@@ -180,19 +223,110 @@ export default {
       return null;
     },
     my_publisher: function() {
-      if (this.my_admin && this.question_data)
-        if (this.my_admin.id == this.question_data.user.id)
-          return this.account.user.user;
+      if (
+        this.my_admin ||
+        (this.question_data &&
+          this.account &&
+          this.account.user &&
+          this.account.user.user &&
+          this.account.user.user.id == this.question_data.user.id)
+      )
+        return this.account.user.user;
       return null;
+    },
+    isauthed: function() {
+      return this.account && this.account.user && this.account.user.user;
+    }
+  },
+  methods: {
+    deleteAttachement(k) {
+      axios
+        .delete(apiRes("attachement", this.question_data.attachements[k].id))
+        .then(e => {
+          this.question_data.attachements.splice(k, 1);
+        });
+    },
+    toggleModal(tfadlek = "nfadlek") {
+      if (tfadlek == "nfadlek") {
+        this.modal_show = !this.modal_show;
+      } else {
+        this.modal_show = false;
+        console.log("this.deletereason", this.deletereason, this.account.user);
+
+        axios
+          .put(apiRes("delquestion", this.question_data.id), {
+            deletereason: this.deletereason,
+            admin: this.account.user
+          })
+          .then(e => this.$router.push("/user/my_questions"));
+      }
+    },
+    questionDelete() {
+      if (this.editingMode == "preview") {
+        // delete
+        this.toggleModal();
+        return;
+      } else {
+        // rollback
+        this.question_data = Object.assign({}, this.rollBack_question_data);
+      }
+      this.editingMode = this.editingMode == "preview" ? "modify" : "preview";
+    },
+    questionModify() {
+      if (this.editingMode == "preview") {
+        // alternate to modification so just pass
+      } else {
+        // apply modifications
+        axios.put(apiRes("question", this.question_data.id), {
+          title: this.question_data.title,
+          description: this.question_data.description,
+          serviceId: this.question_data.serviceId,
+          content: this.question_data.content,
+          // updates: this.question_data,
+          editor: this.account.user,
+          modificationtext:
+            "Have a look at your Question, I have already applied Changes!"
+        });
+      }
+      this.editingMode = this.editingMode == "preview" ? "modify" : "preview";
+    },
+    submitAnswer() {
+      if (this.myanswer.length) {
+        axios
+          .post(apiRes("answer"), {
+            content: this.myanswer,
+            questionId: this.question_data.id,
+            userId: this.account.user.user.id
+          })
+          .then(r => window.location.reload());
+      }
+    },
+    successRate(idAns) {
+      axios
+        .put(apiRes("answer", idAns), {
+          responsible: this.account.user.user
+        })
+        .then(r => window.location.reload());
+    },
+    dangerRate(idAns) {
+      axios
+        .delete(apiRes("answer", idAns), {
+          responsible: this.account.user.user
+        })
+        .then(r => window.location.reload());
     }
   },
   data() {
     return {
+      editingMode: "preview", //preview,modify
+      rollBack_question_data: null,
       myanswer: "",
+      deletereason: "",
       activeTab: "Overview",
       loadingState: "loading",
       question_data: null,
-      question_answers: null
+      question_answers: null,
+      modal_show: false
     };
   },
   mounted() {
@@ -202,6 +336,7 @@ export default {
       .get(apiRes("question", question_id))
       .then(resp => {
         this.question_data = resp.data;
+        this.rollBack_question_data = Object.assign({}, resp.data);
         this.question_answers = this.question_data.answers;
         this.loadingState = "success";
       })

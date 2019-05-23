@@ -7,14 +7,15 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     content: DataTypes.TEXT,
+    is_best: { type: DataTypes.BOOLEAN, defaultValue: false },
     edited: DataTypes.BOOLEAN,
     editedBy: DataTypes.STRING,
   }, {});
   answer.associate = function (models) {
     // associations can be defined here
     // reaction join
-    answer.belongsTo(models.user,{ constraints: false, allowNull: true, defaultValue: null })
-    answer.belongsTo(models.question,{ constraints: false, allowNull: true, defaultValue: null })
+    answer.belongsTo(models.user, { constraints: false, allowNull: true, defaultValue: null })
+    answer.belongsTo(models.question, { constraints: false, allowNull: true, defaultValue: null })
     // answer.belongsToMany(models.user, {
 
     //   through: { model: models.user_answer, unique: false }, constraints: false, allowNull: true, defaultValue: null
